@@ -38,7 +38,7 @@
   });
   Crafty.c("Planet", {
     init: function() {
-      return this.requires("2D, DOM");
+      return this.requires("2D, DOM, Tween");
     },
     planet: function(radius, stroke) {
       this.radius = radius;
@@ -75,12 +75,15 @@
   });
   Crafty.c("PlanetWalker", {
     init: function() {
-      return this.requires("2D, DOM");
+      return this.requires("2D, DOM, Tween");
     },
     planetwalker: function(planet, theta, r) {
       this.planet = planet;
-      this.theta = theta;
-      this.r = r;
+      this.theta = theta != null ? theta : 0;
+      this.r = r != null ? r : false;
+      if (!this.r) {
+        this.r = this.planet.radius + this.pos()._h;
+      }
       this.position(this.theta, this.r);
       this.planet.bind("StartSpin", __bind(function() {
         return this._startspin();
@@ -92,7 +95,7 @@
     _startspin: function(e) {
       return this.tween({
         rotation: this.theta - 360
-      }, this.snake.rotation_frames);
+      }, this.planet.rotation_frames);
     },
     _stopspin: function() {},
     position: function(theta, r) {
@@ -110,6 +113,49 @@
       var theta;
       theta = circumference_location * 360 / this.planet.circumference();
       return this.position(theta, this.r);
+    },
+    getCircumferenceLocation: function() {
+      return this.theta * this.planet.circumference() / 360;
+    }
+  });
+  Crafty.c("TwowayPlanetWalker", {
+    _speed: 3,
+    _up: false,
+    init: function() {
+      return this.requires("PlanetWalker");
+    },
+    twowayOnPlanet: function(planet, _speed, _up) {
+      this.planet = planet;
+      this._speed = _speed;
+      this._up = _up;
+      this.planetwalker(this.planet);
+      this.bind("KeyDown", function(e) {
+        if (e.key === Crafty.keys.LEFT_ARROW) {
+          this._moveL = true;
+        }
+        if (e.key === Crafty.keys.RIGHT_ARROW) {
+          return this._moveR = true;
+        }
+      });
+      this.bind("KeyUp", function(e) {
+        if (e.key === Crafty.keys.LEFT_ARROW) {
+          this._moveL = false;
+        }
+        if (e.key === Crafty.keys.RIGHT_ARROW) {
+          return this._moveR = false;
+        }
+      });
+      return this.bind("EnterFrame", function() {
+        if (this._moveL) {
+          this._moveC(-this._speed);
+        }
+        if (this._moveR) {
+          return this._moveC(this._speed);
+        }
+      });
+    },
+    _moveC: function(px) {
+      return this.setCircumferenceLocation(this.getCircumferenceLocation() + px);
     }
   });
 }).call(this);

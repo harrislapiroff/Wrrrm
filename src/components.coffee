@@ -32,7 +32,7 @@ Crafty.c "SnakePart",
 
 Crafty.c "Planet",
 	init: () ->
-		@requires "2D, DOM"
+		@requires "2D, DOM, Tween"
 	
 	planet: (@radius, @stroke) ->
 		@attr {x: Crafty.viewport.width/2 - @radius, y: Crafty.viewport.height - 200, w: (@radius-@stroke)*2, h: (@radius-@stroke)*2}
@@ -59,9 +59,11 @@ Crafty.c "Planet",
 
 Crafty.c "PlanetWalker",
 	init: () ->
-		@requires "2D, DOM"
+		@requires "2D, DOM, Tween"
 	
-	planetwalker: (@planet, @theta, @r) ->
+	planetwalker: (@planet, @theta=0, @r=false) ->
+		unless @r
+			@r = @planet.radius + @pos()._h
 		# set default position
 		@position @theta, @r
 		
@@ -70,7 +72,7 @@ Crafty.c "PlanetWalker",
 		@planet.bind "StopSpin", () => @_stopspin()
 	
 	_startspin: (e) ->
-		@tween {rotation: @theta - 360}, @snake.rotation_frames
+		@tween {rotation: @theta - 360}, @planet.rotation_frames
 	
 	_stopspin: () ->
 		# unimplemented, because there's currently no method to stop the tween
@@ -88,3 +90,37 @@ Crafty.c "PlanetWalker",
 	setCircumferenceLocation: (circumference_location) ->
 		theta = circumference_location * 360 / @planet.circumference()
 		@position theta, @r
+	
+	getCircumferenceLocation: () ->
+		@theta * @planet.circumference() / 360
+
+Crafty.c "TwowayPlanetWalker",
+	_speed: 3
+	_up: false
+
+	init: () ->
+		@requires "PlanetWalker"
+	
+	twowayOnPlanet: (@planet, @_speed, @_up) ->
+		@planetwalker @planet
+		
+		@bind "KeyDown", (e) ->
+			if e.key == Crafty.keys.LEFT_ARROW
+				@_moveL = true
+			if e.key == Crafty.keys.RIGHT_ARROW
+				@_moveR = true
+				
+		@bind "KeyUp", (e) ->
+			if e.key == Crafty.keys.LEFT_ARROW
+				@_moveL = false
+			if e.key == Crafty.keys.RIGHT_ARROW
+				@_moveR = false
+		
+		@bind "EnterFrame", () ->
+			if @_moveL
+				@_moveC(-@_speed)
+			if @_moveR
+				@_moveC(@_speed)
+	
+	_moveC: (px) ->
+		@setCircumferenceLocation @getCircumferenceLocation() + px

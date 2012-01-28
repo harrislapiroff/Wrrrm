@@ -1,4 +1,6 @@
 (function() {
+  var TESTING;
+  TESTING = true;
   Crafty.scene("loading", function() {
     var loading_text;
     loading_text = Crafty.e("2D, DOM, Text");
@@ -28,16 +30,18 @@
     }
     KeyDownHandler = function() {
       var spike, spikes, _i, _len;
-      snake.startspin();
-      spikes = Crafty('spike');
-      for (_i = 0, _len = spikes.length; _i < _len; _i++) {
-        spike = spikes[_i];
-        Crafty(spike).addComponent('Deadly');
+      if (!TESTING) {
+        snake.startspin();
+        spikes = Crafty('spike');
+        for (_i = 0, _len = spikes.length; _i < _len; _i++) {
+          spike = spikes[_i];
+          Crafty(spike).addComponent('Deadly');
+        }
+        return Crafty.unbind("KeyDown", KeyDownHandler);
       }
-      return Crafty.unbind("KeyDown", KeyDownHandler);
     };
     Crafty.bind("KeyDown", KeyDownHandler);
-    protagonist = generate_protagonist();
+    protagonist = generate_protagonist(snake);
     return protagonist.bind("Died", function() {
       return Crafty.scene("ouroboros");
     });

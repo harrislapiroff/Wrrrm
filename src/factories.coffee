@@ -16,10 +16,10 @@
 	ent = Crafty.e "2D, DOM, Tween, SnakePart, snakehead"
 	ent.snakepart snake, loc, 30
 	
-@generate_protagonist = () ->
-	ent = Crafty.e "2D, DOM, person, Twoway, Gravity, Protagonist"
+@generate_protagonist = (snake) ->
+	ent = Crafty.e "2D, DOM, person, TwowayPlanetWalker, Gravity, Protagonist"
 	ent.attr {x: (Crafty.viewport.width - 32) / 2, y: 20, w: 32, h:32}
-	ent.twoway 0, 10
+	ent.twowayOnPlanet snake, 3, 10
 	ent.gravity "Solid"
 
 @generate_death = (attrs) ->

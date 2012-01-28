@@ -26,16 +26,16 @@
     ent = Crafty.e("2D, DOM, Tween, SnakePart, snakehead");
     return ent.snakepart(snake, loc, 30);
   };
-  this.generate_protagonist = function() {
+  this.generate_protagonist = function(snake) {
     var ent;
-    ent = Crafty.e("2D, DOM, person, Twoway, Gravity, Protagonist");
+    ent = Crafty.e("2D, DOM, person, TwowayPlanetWalker, Gravity, Protagonist");
     ent.attr({
       x: (Crafty.viewport.width - 32) / 2,
       y: 20,
       w: 32,
       h: 32
     });
-    ent.twoway(0, 10);
+    ent.twowayOnPlanet(snake, 3, 10);
     return ent.gravity("Solid");
   };
   this.generate_death = function(attrs) {
