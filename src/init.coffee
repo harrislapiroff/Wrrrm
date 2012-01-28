@@ -1,8 +1,8 @@
 @WORLD_CIRCUMFERENCE = 8000 * 3.145
 
 # These are not global because they are accessible through Craft.viewport.width and Crafty.viewport.height
-VIEW_WIDTH = 800
-VIEW_HEIGHT = 600
+VIEW_WIDTH = Crafty.DOM.window.width
+VIEW_HEIGHT = Crafty.DOM.window.height
 
 main = () ->
 	Crafty.init VIEW_WIDTH, VIEW_HEIGHT
