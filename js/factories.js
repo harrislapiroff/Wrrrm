@@ -1,7 +1,7 @@
 (function() {
   this.generate_snake = function(radius) {
     var ent;
-    ent = Crafty.e("2D, DOM, Tween, Solid, Snake, Collision");
+    ent = Crafty.e("2D, DOM, Tween, Solid, Snake, Collision, Platform");
     ent.collision();
     return ent.snake(radius);
   };
@@ -29,7 +29,7 @@
       h: 32
     });
     ent.twowayOnPlanet(snake, 10, 10);
-    return ent.planetGravity();
+    return ent.planetGravity("Platform");
   };
   this.generate_platform = function(snake, loc, attrs) {
     var ent;

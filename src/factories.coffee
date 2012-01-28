@@ -1,5 +1,5 @@
 @generate_snake = (radius) ->
-	ent = Crafty.e "2D, DOM, Tween, Solid, Snake, Collision"
+	ent = Crafty.e "2D, DOM, Tween, Solid, Snake, Collision, Platform"
 	ent.collision()
 	ent.snake radius
 
@@ -19,7 +19,7 @@
 	ent.mortality()
 	ent.attr {x: (Crafty.viewport.width - 32) / 2, y: 20, w: 32, h:32}
 	ent.twowayOnPlanet snake, 10, 10
-	ent.planetGravity()
+	ent.planetGravity "Platform"
 
 @generate_platform = (snake, loc, attrs) ->
 	ent = Crafty.e "2D, DOM, Platform, PlanetWalker, Collision"
