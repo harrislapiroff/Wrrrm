@@ -110,7 +110,7 @@
       this.attr({
         x: (Crafty.viewport.width - this.pos()._w) / 2
       });
-      this.origin(this.pos()._w / 2, this.planet.radius + this._altitude);
+      this.origin(this.pos()._w / 2, this.planet.radius + this._altitude + this.pos()._h);
       this.planet.bind("Rotated", __bind(function(tdelta) {
         return this.rotateBy(tdelta);
       }, this));

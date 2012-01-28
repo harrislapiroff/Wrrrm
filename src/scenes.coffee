@@ -20,6 +20,7 @@ Crafty.scene "ouroboros", () ->
 	snakehead = generate_snakehead snake, 100
 	death_floor = generate_death x: -1000, y: Crafty.viewport.height - 1, w: Crafty.viewport.width + 2000, h: 1
 	platform = generate_platform snake, 800, {w: 100, h: 3}, 80
+	platform_2 = generate_platform snake, 900, {w: 100, h: 3}, 120
 	
 	i = 100
 	while (i + 900) < WORLD_CIRCUMFERENCE

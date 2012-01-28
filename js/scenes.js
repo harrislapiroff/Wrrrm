@@ -35,7 +35,7 @@
     });
   });
   Crafty.scene("ouroboros", function() {
-    var KeyDownHandler, death_floor, i, platform, protagonist, snake, snakehead;
+    var KeyDownHandler, death_floor, i, platform, platform_2, protagonist, snake, snakehead;
     snake = generate_snake(WORLD_RADIUS);
     snakehead = generate_snakehead(snake, 100);
     death_floor = generate_death({
@@ -48,6 +48,10 @@
       w: 100,
       h: 3
     }, 80);
+    platform_2 = generate_platform(snake, 900, {
+      w: 100,
+      h: 3
+    }, 120);
     i = 100;
     while ((i + 900) < WORLD_CIRCUMFERENCE) {
       i = Crafty.math.randomInt(i + 300, i + 900);
