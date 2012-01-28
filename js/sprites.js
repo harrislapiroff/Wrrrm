@@ -8,4 +8,7 @@
   Crafty.sprite(32, 34, "img/spike.png", {
     "spike": [0, 0]
   });
+  Crafty.sprite(128, 40, "img/snakehead.png", {
+    "snakehead": [0, 0]
+  });
 }).call(this);

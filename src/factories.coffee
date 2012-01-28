@@ -13,6 +13,10 @@
 @generate_spike = (snake, loc) ->
 	ent = Crafty.e "2D, DOM, Tween, SnakePart, spike"
 	ent.snakepart snake, loc, 32
+
+@generate_snakehead = (snake, loc) ->
+	ent = Crafty.e "2D, DOM, Tween, SnakePart, snakehead"
+	ent.snakepart snake, loc, 30
 	
 @generate_protagonist = () ->
 	ent = Crafty.e "2D, DOM, person, Twoway, Gravity, Protagonist"

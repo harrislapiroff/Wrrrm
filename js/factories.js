@@ -31,6 +31,11 @@
     ent = Crafty.e("2D, DOM, Tween, SnakePart, spike");
     return ent.snakepart(snake, loc, 32);
   };
+  this.generate_snakehead = function(snake, loc) {
+    var ent;
+    ent = Crafty.e("2D, DOM, Tween, SnakePart, snakehead");
+    return ent.snakepart(snake, loc, 30);
+  };
   this.generate_protagonist = function() {
     var ent;
     ent = Crafty.e("2D, DOM, person, Twoway, Gravity, Protagonist");

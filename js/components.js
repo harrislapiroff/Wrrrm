@@ -54,7 +54,7 @@
         y: snake_pos._y - this.altitude,
         x: snake_pos._x + (snake_pos._w + pos._w) / 2
       });
-      this.origin(pos._w / 2, snake_pos._h / 2 + this.altitude);
+      this.origin(pos._w / 2, (snake_pos._h - this.altitude) / 2);
       this.snake.bind("StartSpin", __bind(function() {
         return this._startspin();
       }, this));

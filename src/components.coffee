@@ -50,7 +50,7 @@ Crafty.c "SnakePart",
 		@attr {rotation: @initial_rotation, y: snake_pos._y-@altitude, x: snake_pos._x+(snake_pos._w+pos._w)/2}
 		
 		# set the origin to the center of the snake
-		@origin pos._w/2, (snake_pos._h)/2+@altitude
+		@origin pos._w/2, (snake_pos._h - @altitude)/2
 		
 		# bind the spinning to the snake spinning
 		@snake.bind "StartSpin", () => @_startspin()

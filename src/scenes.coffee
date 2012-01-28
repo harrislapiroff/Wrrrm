@@ -11,6 +11,7 @@ Crafty.scene "loading", () ->
 Crafty.scene "ouroboros", () ->
 	Crafty.background('#CCC')
 	snake = generate_snake 8000, 5000
+	snakehead = generate_snakehead snake, 100
 	
 	i = 100
 	while i < WORLD_CIRCUMFERENCE
