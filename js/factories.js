@@ -1,8 +1,8 @@
 (function() {
-  this.generate_snake = function(radius, rotation_frames) {
+  this.generate_snake = function(radius) {
     var ent;
     ent = Crafty.e("2D, DOM, Tween, Solid, Collision, Snake");
-    return ent.snake(radius, rotation_frames);
+    return ent.snake(radius);
   };
   this.generate_scale = function(snake, loc, altitude) {
     var ent;
@@ -19,24 +19,24 @@
   this.generate_spike = function(snake, loc) {
     var ent;
     ent = Crafty.e("2D, DOM, Tween, SnakePart, spike");
-    return ent.snakepart(snake, loc, 32);
+    return ent.snakepart(snake, loc, -2);
   };
   this.generate_snakehead = function(snake, loc) {
     var ent;
     ent = Crafty.e("2D, DOM, Tween, SnakePart, snakehead");
-    return ent.snakepart(snake, loc, 30);
+    return ent.snakepart(snake, loc, -5);
   };
-  this.generate_protagonist = function() {
+  this.generate_protagonist = function(snake) {
     var ent;
-    ent = Crafty.e("2D, DOM, person, Twoway, Gravity, Protagonist");
+    ent = Crafty.e("2D, DOM, person, TwowayPlanetWalker, PlanetGravity, Protagonist");
     ent.attr({
       x: (Crafty.viewport.width - 32) / 2,
       y: 20,
       w: 32,
       h: 32
     });
-    ent.twoway(0, 10);
-    return ent.gravity("Solid");
+    ent.twowayOnPlanet(snake, 10, 10);
+    return ent.planetGravity();
   };
   this.generate_death = function(attrs) {
     var ent;

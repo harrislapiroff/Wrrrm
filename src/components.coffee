@@ -12,25 +12,27 @@ Crafty.c "Snake"
 	init: () ->
 		@requires "2D, DOM, Tween, Planet"
 		
-	snake: (@radius, @rotation_frames, @stroke=40) ->
-		@planet @radius, @stroke
-		# set the radius and number of frames for a complete rotation for the snake.
-		@origin @radius, @radius
+	snake: (radius, stroke=40) ->
+		@planet radius, stroke
+		@css
+			'border-style': 'solid'
+			'border-color': '#000'
+			'background': 'transparent'
 
 
 Crafty.c "SnakePart",
 	init: () ->
 		@requires "2D, DOM, Tween, PlanetWalker"
 		
-	snakepart: (@snake, @circumference_location, @altitude=0) ->
-		# set which snake the part is attached to and where on the circumference of the snake the part is located
-		# please call this *after* setting a width and height on the entity and its snake parent
-		
+	snakepart: (snake, surface_location, altitude) ->
 		# initialize the planetwalkerness
-		@planetwalker @snake, 0, @altitude + @snake.radius
-		@setCircumferenceLocation @circumference_location
+		@planetwalker snake, surface_location, altitude
 
 Crafty.c "Planet",
+	_rotation_speed: 1
+	_rotating: false
+	_theta: 0
+	
 	init: () ->
 		@requires "2D, DOM"
 	
@@ -38,17 +40,31 @@ Crafty.c "Planet",
 		@attr {x: Crafty.viewport.width/2 - @radius, y: Crafty.viewport.height - 200, w: (@radius-@stroke)*2, h: (@radius-@stroke)*2}
 		@css
 			'border-radius': @radius
-			'border': "#{@stroke}px solid #000"
+			'border-width': "#{@stroke}px"
+		
+		# set the origin
+		@origin @radius, @radius
+		
+		@bind "EnterFrame", () ->
+			if @_rotating
+				@rotate()
+			# update the DOM attributes to reflect the changes this frame
+			@attr {rotation: @_theta}
 	
-	startspin: () ->
-		# start the snake spinning
-		@attr {rotation: 0}
-		@tween {rotation: -360}, @rotation_frames
-		@trigger "StartSpin"
+	rotate: () ->
+		old_theta = @_theta
+		@_theta = (@_theta + @_rotation_speed) % 360
+		
+		# trigger the Rotated event and pass the tdelta
+		@trigger "Rotated",  @_theta - old_theta
+	
+	startSpin: (@_rotation_speed = @_rotation_speed) ->
+		@_rotating = true
+		@trigger "StartRotation"
 
-	stopspin: () ->
-		# unimplemented, because there's currently no method to stop the tween
-		@trigger "StopSpin"
+	stopSpin: () ->
+		@_rotating = false
+		@trigger "StopRotation"
 	
 	getCartesianCoords: () ->
 		return @pos()
@@ -58,33 +74,101 @@ Crafty.c "Planet",
 		@radius * 6.28
 
 Crafty.c "PlanetWalker",
+	_theta: 0
+	_altitude: 0
+	
 	init: () ->
-		@requires "2D, DOM"
+		@requires "2D, DOM, Tween"
 	
-	planetwalker: (@planet, @theta, @r) ->
-		# set default position
-		@position @theta, @r
+	planetwalker: (@planet, surface_location=false, altitude=false) ->
 		
-		# bind the spinning to the snake spinning
-		@planet.bind "StartSpin", () => @_startspin()
-		@planet.bind "StopSpin", () => @_stopspin()
-	
-	_startspin: (e) ->
-		@tween {rotation: @theta - 360}, @snake.rotation_frames
-	
-	_stopspin: () ->
-		# unimplemented, because there's currently no method to stop the tween
-	
-	position: (@theta, @r) ->
-		# provide theta in degrees
-		@altitude = @r - @planet.radius
+		if altitude
+			@_altitude = altitude
+		
+		if surface_location
+			@setSurfaceLocation surface_location
 		
 		# set the origin to the center of the planet
-		@origin @pos()._w/2, @planet.radius + @altitude
+		@attr {x: (Crafty.viewport.width - @pos()._w)/2}
 		
-		# rotate the entity to be at the correct location on the snake
-		@attr {rotation: @theta, y: @planet.pos()._y - @altitude, x: (Crafty.viewport.width - @pos()._w)/2}
+		@origin @pos()._w/2, @planet.radius + @_altitude
+		
+		# bind the spinning to the snake spinning
+		@planet.bind "Rotated", (tdelta) => @rotateBy(tdelta)
+		
+		@bind "EnterFrame", () ->
+			@attr
+				rotation: @_theta
+				y: @planet.pos()._y - @_altitude - @pos()._h
 	
-	setCircumferenceLocation: (circumference_location) ->
-		theta = circumference_location * 360 / @planet.circumference()
-		@position theta, @r
+	rotateBy: (tdelta) ->
+		@_theta = @_theta + tdelta
+	
+	getAltitude: () ->
+		@_altitude
+		
+	setAltitude: (a) ->
+		@_altitude = a
+	
+	setSurfaceLocation: (surface_location) ->
+		@_theta = surface_location * 360 / @planet.circumference()
+	
+	getCircumferenceLocation: () ->
+		@_theta * @planet.circumference() / 360
+
+Crafty.c "TwowayPlanetWalker",
+	_speed: 3
+	_upspeed: 0
+
+	init: () ->
+		@requires "PlanetWalker"
+	
+	twowayOnPlanet: (@planet, @_speed, @_upspeed) ->
+		@planetwalker @planet
+		
+		@bind "KeyDown", (e) ->
+			if e.key == Crafty.keys.LEFT_ARROW
+				@_moveL = true
+			if e.key == Crafty.keys.RIGHT_ARROW
+				@_moveR = true
+			if e.key == Crafty.keys.UP_ARROW
+				@_jump = true
+				
+		@bind "KeyUp", (e) ->
+			if e.key == Crafty.keys.LEFT_ARROW
+				@_moveL = false
+			if e.key == Crafty.keys.RIGHT_ARROW
+				@_moveR = false
+			if e.key == Crafty.keys.UP_ARROW
+				@_jump = false
+		
+		@bind "EnterFrame", () ->
+			if @_moveL
+				@_moveC(-@_speed)
+			if @_moveR
+				@_moveC(@_speed)
+			if @_jump
+				@_moveA(@_upspeed)
+	
+	_moveA: (px) ->
+		@setAltitude @getAltitude() + px
+	
+	_moveC: (px) ->
+		@setSurfaceLocation @getCircumferenceLocation() + px
+
+Crafty.c "PlanetGravity",
+	
+	init: () ->
+		@requires "PlanetWalker"
+	
+	planetGravity: (@_initial_fall_speed=3, @_accelleration=1.05) ->
+		@_fall_speed = @_initial_fall_speed
+		@bind "EnterFrame", () ->
+			altitude = @getAltitude()
+			if altitude > 0
+				@_falling = true
+				@_fall_speed = @_fall_speed * @_accelleration
+				@setAltitude Math.max(altitude - @_fall_speed, 0)
+			else
+				@_falling = false
+				@_fall_speed = @_initial_fall_speed
