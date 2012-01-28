@@ -80,7 +80,7 @@
         rotation: this.initial_rotation
       });
       return this.tween({
-        rotation: -360
+        rotation: this.initial_rotation - 360
       }, this.snake.rotation_frames);
     },
     _stopspin: function() {}

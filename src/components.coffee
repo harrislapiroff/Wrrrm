@@ -62,7 +62,7 @@ Crafty.c "SnakePart",
 	
 	_startspin: (e) ->
 		@attr {rotation: @initial_rotation}
-		@tween {rotation: -360}, @snake.rotation_frames
+		@tween {rotation: @initial_rotation-360}, @snake.rotation_frames
 	
 	_stopspin: () ->
 		# unimplemented, because there's currently no method to stop the tween

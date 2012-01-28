@@ -14,7 +14,7 @@ Crafty.scene "ouroboros", () ->
 	snakehead = generate_snakehead snake, 100
 	
 	i = 100
-	while i < WORLD_CIRCUMFERENCE
+	while (i + 900) < WORLD_CIRCUMFERENCE
 		i = Crafty.math.randomInt i+300, i + 900
 		generate_spike snake, i
 		
