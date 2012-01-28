@@ -9,7 +9,6 @@ Crafty.scene "loading", () ->
 
 
 Crafty.scene "ouroboros", () ->
-	Crafty.background('#CCC')
 	snake = generate_snake 4000, 5000
 	snakehead = generate_snakehead snake, 100
 	

@@ -14,7 +14,10 @@ Crafty.c "Snake"
 		
 	snake: (@radius, @rotation_frames, @stroke=40) ->
 		@attr {x: Crafty.viewport.width/2 - @radius, y: Crafty.viewport.height - 200, w: (@radius-@stroke)*2, h: (@radius-@stroke)*2}
-		@css {'border-radius': @radius, 'border': "#{@stroke}px solid #000"}
+		@css
+			'border-radius': @radius
+			'border': "#{@stroke}px solid #000"
+			
 		# set the radius and number of frames for a complete rotation for the snake.
 		@origin @radius, @radius
 	

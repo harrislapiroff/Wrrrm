@@ -19,7 +19,6 @@
   });
   Crafty.scene("ouroboros", function() {
     var KeyDownHandler, i, protagonist, snake, snakehead;
-    Crafty.background('#CCC');
     snake = generate_snake(4000, 5000);
     snakehead = generate_snakehead(snake, 100);
     i = 100;
