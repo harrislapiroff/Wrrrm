@@ -1,8 +1,6 @@
 @generate_snake = (radius, rotation_frames) ->
 	ent = Crafty.e "2D, DOM, Tween, Solid, Collision, Snake"
-	ent.attr {x: (Crafty.viewport.width - 8000)/2, y: Crafty.viewport.height - 200, w: 8000-40, h: 8000-40}
-	ent.css {'border-radius': 4000, 'border': '40px solid #000'}
-	ent.snake(radius, rotation_frames)
+	ent.snake radius, rotation_frames
 
 @generate_scale = (snake, loc, altitude) ->
 	ent = Crafty.e "2D, DOM, Scale, Tween, SnakePart"

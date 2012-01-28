@@ -12,9 +12,11 @@ Crafty.c "Snake"
 	init: () ->
 		@requires "2D, DOM, Tween"
 		
-	snake: (@radius, @rotation_frames) ->
+	snake: (@radius, @rotation_frames, @stroke=40) ->
+		@attr {x: Crafty.viewport.width/2 - @radius, y: Crafty.viewport.height - 200, w: (@radius-@stroke)*2, h: (@radius-@stroke)*2}
+		@css {'border-radius': @radius, 'border': "#{@stroke}px solid #000"}
 		# set the radius and number of frames for a complete rotation for the snake.
-		@origin "center center"
+		@origin @radius, @radius
 	
 	startspin: () ->
 		# start the snake spinning
@@ -50,7 +52,7 @@ Crafty.c "SnakePart",
 		@attr {rotation: @initial_rotation, y: snake_pos._y-@altitude, x: snake_pos._x+(snake_pos._w+pos._w)/2}
 		
 		# set the origin to the center of the snake
-		@origin pos._w/2, (snake_pos._h - @altitude)/2
+		@origin pos._w/2, snake_pos._h/2 + @altitude
 		
 		# bind the spinning to the snake spinning
 		@snake.bind "StartSpin", () => @_startspin()

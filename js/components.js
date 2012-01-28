@@ -16,10 +16,21 @@
     init: function() {
       return this.requires("2D, DOM, Tween");
     },
-    snake: function(radius, rotation_frames) {
+    snake: function(radius, rotation_frames, stroke) {
       this.radius = radius;
       this.rotation_frames = rotation_frames;
-      return this.origin("center center");
+      this.stroke = stroke != null ? stroke : 40;
+      this.attr({
+        x: Crafty.viewport.width / 2 - this.radius,
+        y: Crafty.viewport.height - 200,
+        w: (this.radius - this.stroke) * 2,
+        h: (this.radius - this.stroke) * 2
+      });
+      this.css({
+        'border-radius': this.radius,
+        'border': "" + this.stroke + "px solid #000"
+      });
+      return this.origin(this.radius, this.radius);
     },
     startspin: function() {
       this.attr({
@@ -54,7 +65,7 @@
         y: snake_pos._y - this.altitude,
         x: snake_pos._x + (snake_pos._w + pos._w) / 2
       });
-      this.origin(pos._w / 2, (snake_pos._h - this.altitude) / 2);
+      this.origin(pos._w / 2, snake_pos._h / 2 + this.altitude);
       this.snake.bind("StartSpin", __bind(function() {
         return this._startspin();
       }, this));

@@ -2,16 +2,6 @@
   this.generate_snake = function(radius, rotation_frames) {
     var ent;
     ent = Crafty.e("2D, DOM, Tween, Solid, Collision, Snake");
-    ent.attr({
-      x: (Crafty.viewport.width - 8000) / 2,
-      y: Crafty.viewport.height - 200,
-      w: 8000 - 40,
-      h: 8000 - 40
-    });
-    ent.css({
-      'border-radius': 4000,
-      'border': '40px solid #000'
-    });
     return ent.snake(radius, rotation_frames);
   };
   this.generate_scale = function(snake, loc, altitude) {
