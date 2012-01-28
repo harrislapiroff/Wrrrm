@@ -2,12 +2,6 @@
 	ent = Crafty.e "2D, DOM, Tween, Solid, Collision, Snake"
 	ent.snake radius
 
-@generate_scale = (snake, loc, altitude) ->
-	ent = Crafty.e "2D, DOM, Scale, Tween, SnakePart"
-	ent.attr {w: 20, h: 20}
-	ent.snakepart snake, loc, altitude
-	ent.css {'background-color': '#FFF'}
-
 @generate_spike = (snake, loc) ->
 	ent = Crafty.e "2D, DOM, Tween, SnakePart, spike"
 	ent.snakepart snake, loc, -2

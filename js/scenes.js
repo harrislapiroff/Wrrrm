@@ -35,9 +35,15 @@
     });
   });
   Crafty.scene("ouroboros", function() {
-    var KeyDownHandler, i, protagonist, snake, snakehead;
+    var KeyDownHandler, death_floor, i, protagonist, snake, snakehead;
     snake = generate_snake(WORLD_RADIUS);
     snakehead = generate_snakehead(snake, 100);
+    death_floor = generate_death({
+      x: 0,
+      y: Crafty.viewport.height - 1,
+      w: Crafty.viewport.width,
+      h: 1
+    });
     i = 100;
     while ((i + 900) < WORLD_CIRCUMFERENCE) {
       i = Crafty.math.randomInt(i + 300, i + 900);
