@@ -31,20 +31,24 @@
     ent.twowayOnPlanet(snake, 10, 10);
     return ent.planetGravity("Platform");
   };
-  this.generate_platform = function(snake, loc, attrs) {
+  this.generate_platform = function(snake, loc, attrs, altitude) {
     var ent;
+    if (altitude == null) {
+      altitude = 20;
+    }
     ent = Crafty.e("2D, DOM, Platform, PlanetWalker, Collision");
     ent.css({
       'background-color': '#000',
       'border-radius': 3
     });
     ent.attr(attrs);
-    return ent.planetwalker(snake, loc, 20);
+    ent.collision();
+    return ent.planetwalker(snake, loc, altitude);
   };
   this.generate_death = function(attrs) {
     var ent;
     ent = Crafty.e("2D, DOM, Deadly, Collision");
-    ent.collision();
-    return ent.attr(attrs);
+    ent.attr(attrs);
+    return ent.collision();
   };
 }).call(this);

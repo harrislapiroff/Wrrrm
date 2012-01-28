@@ -21,13 +21,14 @@
 	ent.twowayOnPlanet snake, 10, 10
 	ent.planetGravity "Platform"
 
-@generate_platform = (snake, loc, attrs) ->
+@generate_platform = (snake, loc, attrs, altitude=20) ->
 	ent = Crafty.e "2D, DOM, Platform, PlanetWalker, Collision"
 	ent.css 'background-color':'#000', 'border-radius': 3
 	ent.attr attrs
-	ent.planetwalker snake, loc, 20
+	ent.collision()
+	ent.planetwalker snake, loc, altitude
 
 @generate_death = (attrs) ->
 	ent = Crafty.e "2D, DOM, Deadly, Collision"
-	ent.collision()
 	ent.attr attrs
+	ent.collision()

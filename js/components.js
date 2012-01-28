@@ -199,14 +199,21 @@
       this._accelleration = _accelleration != null ? _accelleration : 1.05;
       this._fall_speed = this._initial_fall_speed;
       return this.bind("EnterFrame", function() {
-        var altitude;
+        var altitude, collision, collision_entity, collision_normal;
         altitude = this.getAltitude();
         if (altitude > 0 && !this.hit(this._collision_selector)) {
           this._falling = true;
-        }
-        if (altitude <= 0) {
+        } else {
           this._falling = false;
           this._fall_speed = this._initial_fall_speed;
+        }
+        if (this.hit(this._collision_selector)) {
+          collision = this.hit(this._collision_selector)[0];
+          collision_entity = collision.obj;
+          collision_normal = collision.normal;
+          if (collision.normal.y <= 0 && !this._jump) {
+            this.setAltitude(collision_entity.getAltitude() + collision_entity.pos()._h);
+          }
         }
         if (this._falling === true) {
           this._falling = true;

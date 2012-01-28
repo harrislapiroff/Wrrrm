@@ -169,10 +169,16 @@ Crafty.c "PlanetGravity",
 			
 			if altitude > 0 and not @hit(@_collision_selector)
 				@_falling = true
-				
-			if altitude <= 0
+			else
 				@_falling = false
 				@_fall_speed = @_initial_fall_speed
+			
+			if @hit(@_collision_selector)
+				collision = @hit(@_collision_selector)[0]
+				collision_entity = collision.obj
+				collision_normal = collision.normal
+				if collision.normal.y <= 0 and not @_jump
+					@setAltitude collision_entity.getAltitude() + collision_entity.pos()._h
 			
 			if @_falling == true
 				@_falling = true

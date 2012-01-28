@@ -39,15 +39,15 @@
     snake = generate_snake(WORLD_RADIUS);
     snakehead = generate_snakehead(snake, 100);
     death_floor = generate_death({
-      x: 0,
+      x: -1000,
       y: Crafty.viewport.height - 1,
-      w: Crafty.viewport.width,
+      w: Crafty.viewport.width + 2000,
       h: 1
     });
-    platform = generate_platform(snake, 200, {
+    platform = generate_platform(snake, 800, {
       w: 100,
       h: 3
-    });
+    }, 80);
     i = 100;
     while ((i + 900) < WORLD_CIRCUMFERENCE) {
       i = Crafty.math.randomInt(i + 300, i + 900);
