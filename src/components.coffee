@@ -107,7 +107,7 @@ Crafty.c "PlanetWalker",
 				@collision()
 	
 	rotateBy: (tdelta) ->
-		@_theta = @_theta + tdelta
+		@_theta = @_theta + tdelta % 360
 	
 	getAltitude: () ->
 		@_altitude
@@ -171,18 +171,26 @@ Crafty.c "PlanetGravity",
 		@bind "EnterFrame", () ->
 			altitude = @getAltitude()
 			
-			if altitude > 0 and not @hit(@_collision_selector)
+			# falling is true if you're above 0 altitde
+			if altitude > 0
 				@_falling = true
 			else
 				@_falling = false
 				@_fall_speed = @_initial_fall_speed
 			
+			# unless you hit a platform
 			if @hit(@_collision_selector)
 				collision = @hit(@_collision_selector)[0]
 				collision_entity = collision.obj
 				collision_normal = collision.normal
+				# if you hit the top of the platform, stay there
 				if collision.normal.y <= 0 and not @_jump
+					@_falling = false
 					@setAltitude collision_entity.getAltitude() + collision_entity.pos()._h
+				# if you hit the bottom, fall
+				if collision.normal.y > 0
+					@_falling = true
+					@setAltitude collision_entity.getAltitude() - collision_entity.pos()._h - @pos()._h
 			
 			if @_falling == true
 				@_falling = true

@@ -125,7 +125,7 @@
       });
     },
     rotateBy: function(tdelta) {
-      return this._theta = this._theta + tdelta;
+      return this._theta = this._theta + tdelta % 360;
     },
     getAltitude: function() {
       return this._altitude;
@@ -204,7 +204,7 @@
       return this.bind("EnterFrame", function() {
         var altitude, collision, collision_entity, collision_normal;
         altitude = this.getAltitude();
-        if (altitude > 0 && !this.hit(this._collision_selector)) {
+        if (altitude > 0) {
           this._falling = true;
         } else {
           this._falling = false;
@@ -215,7 +215,12 @@
           collision_entity = collision.obj;
           collision_normal = collision.normal;
           if (collision.normal.y <= 0 && !this._jump) {
+            this._falling = false;
             this.setAltitude(collision_entity.getAltitude() + collision_entity.pos()._h);
+          }
+          if (collision.normal.y > 0) {
+            this._falling = true;
+            this.setAltitude(collision_entity.getAltitude() - collision_entity.pos()._h - this.pos()._h);
           }
         }
         if (this._falling === true) {
