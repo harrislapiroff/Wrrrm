@@ -9,7 +9,7 @@ Crafty.scene "loading", () ->
 
 
 Crafty.scene "ouroboros", () ->
-	snake = generate_snake 4000, 5000
+	snake = generate_snake WORLD_RADIUS, 500
 	snakehead = generate_snakehead snake, 100
 	
 	i = 100

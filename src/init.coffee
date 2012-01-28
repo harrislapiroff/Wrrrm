@@ -1,4 +1,5 @@
-@WORLD_CIRCUMFERENCE = 8000 * 3.145
+@WORLD_RADIUS = 1000
+@WORLD_CIRCUMFERENCE = WORLD_RADIUS * 3.145
 
 # These are not global because they are accessible through Craft.viewport.width and Crafty.viewport.height
 VIEW_WIDTH = Crafty.DOM.window.width
