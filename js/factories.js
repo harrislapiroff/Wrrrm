@@ -5,12 +5,12 @@
     ent.attr({
       x: (Crafty.viewport.width - 8000) / 2,
       y: Crafty.viewport.height - 200,
-      w: 8000,
-      h: 8000
+      w: 8000 - 40,
+      h: 8000 - 40
     });
     ent.css({
-      'background-color': '#000',
-      'border-radius': 4000
+      'border-radius': 4000,
+      'border': '40px solid #000'
     });
     return ent.snake(radius, rotation_frames);
   };
