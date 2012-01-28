@@ -18,10 +18,12 @@
     });
   });
   Crafty.scene("ouroboros", function() {
-    var KeyDownHandler, protagonist, snake;
+    var KeyDownHandler, i, protagonist, snake;
     Crafty.background('#CCC');
     snake = generate_snake(8000, 5000);
-    generate_spike(snake, 400);
+    for (i = 0; i <= 50; i++) {
+      generate_spike(snake, Crafty.math.randomInt(100, WORLD_CIRCUMFERENCE));
+    }
     KeyDownHandler = function() {
       var spike, spikes, _i, _len;
       snake.startspin();
