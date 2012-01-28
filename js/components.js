@@ -110,15 +110,18 @@
       this.attr({
         x: (Crafty.viewport.width - this.pos()._w) / 2
       });
-      this.origin(this.pos()._w / 2, this.planet.radius + this._altitude + this.pos()._h);
       this.planet.bind("Rotated", __bind(function(tdelta) {
         return this.rotateBy(tdelta);
       }, this));
       return this.bind("EnterFrame", function() {
-        return this.attr({
+        this.attr({
           rotation: this._theta,
           y: this.planet.pos()._y - this._altitude - this.pos()._h
         });
+        this.origin(this.pos()._w / 2, this.planet.radius + this._altitude + this.pos()._h);
+        if (this.collision) {
+          return this.collision();
+        }
       });
     },
     rotateBy: function(tdelta) {

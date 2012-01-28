@@ -31,10 +31,8 @@ Crafty.scene "ouroboros", () ->
 		# keypress triggers the world to start spinning
 		unless TESTING
 			snake.startSpin -.25
-			# make spikes deadly
-			spikes = Crafty('spike')
-			for spike in spikes
-				Crafty(spike).addComponent 'Deadly'
+			# Make man mortal.
+			protagonist.mortality()
 			# unbind the keypress
 			Crafty.unbind "KeyDown", KeyDownHandler
 	

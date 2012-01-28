@@ -92,15 +92,19 @@ Crafty.c "PlanetWalker",
 		# set the origin to the center of the planet
 		@attr {x: (Crafty.viewport.width - @pos()._w)/2}
 		
-		@origin @pos()._w/2, @planet.radius + @_altitude + @pos()._h
-		
 		# bind the spinning to the snake spinning
 		@planet.bind "Rotated", (tdelta) => @rotateBy(tdelta)
 		
 		@bind "EnterFrame", () ->
+			# Refresh the altitude, rotation, and origin location
 			@attr
 				rotation: @_theta
 				y: @planet.pos()._y - @_altitude - @pos()._h
+			
+			@origin @pos()._w/2, @planet.radius + @_altitude + @pos()._h
+			
+			if @collision
+				@collision()
 	
 	rotateBy: (tdelta) ->
 		@_theta = @_theta + tdelta

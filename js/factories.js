@@ -7,13 +7,13 @@
   };
   this.generate_spike = function(snake, loc) {
     var ent;
-    ent = Crafty.e("2D, DOM, Tween, SnakePart, spike, Collision");
+    ent = Crafty.e("2D, DOM, Tween, SnakePart, spike, Collision, Deadly");
     ent.collision();
     return ent.snakepart(snake, loc, -2);
   };
   this.generate_snakehead = function(snake, loc) {
     var ent;
-    ent = Crafty.e("2D, DOM, Tween, SnakePart, snakehead, Collision");
+    ent = Crafty.e("2D, DOM, Tween, SnakePart, snakehead, Collision, Deadly");
     ent.collision();
     return ent.snakepart(snake, loc, -5);
   };
@@ -21,7 +21,6 @@
     var ent;
     ent = Crafty.e("2D, DOM, person, TwowayPlanetWalker, PlanetGravity, Protagonist, Collision");
     ent.collision();
-    ent.mortality();
     ent.attr({
       x: (Crafty.viewport.width - 32) / 2,
       y: 20,
@@ -42,8 +41,8 @@
       'border-radius': 3
     });
     ent.attr(attrs);
-    ent.collision();
-    return ent.planetwalker(snake, loc, altitude);
+    ent.planetwalker(snake, loc, altitude);
+    return ent.collision();
   };
   this.generate_death = function(attrs) {
     var ent;

@@ -58,14 +58,9 @@
       generate_spike(snake, i);
     }
     KeyDownHandler = function() {
-      var spike, spikes, _i, _len;
       if (!TESTING) {
         snake.startSpin(-.25);
-        spikes = Crafty('spike');
-        for (_i = 0, _len = spikes.length; _i < _len; _i++) {
-          spike = spikes[_i];
-          Crafty(spike).addComponent('Deadly');
-        }
+        protagonist.mortality();
         return Crafty.unbind("KeyDown", KeyDownHandler);
       }
     };
