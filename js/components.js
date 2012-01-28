@@ -60,6 +60,7 @@
         if (this._rotating) {
           this.rotate();
         }
+        this._theta = this._theta % 360;
         return this.attr({
           rotation: this._theta
         });
@@ -114,6 +115,7 @@
         return this.rotateBy(tdelta);
       }, this));
       return this.bind("EnterFrame", function() {
+        this._theta = this._theta % 360;
         this.attr({
           rotation: this._theta,
           y: this.planet.pos()._y - this._altitude - this.pos()._h
@@ -125,7 +127,7 @@
       });
     },
     rotateBy: function(tdelta) {
-      return this._theta = this._theta + tdelta % 360;
+      return this._theta = this._theta + tdelta;
     },
     getAltitude: function() {
       return this._altitude;
@@ -217,14 +219,16 @@
           if (collision.normal.y <= 0 && !this._jump) {
             this._falling = false;
             this.setAltitude(collision_entity.getAltitude() + collision_entity.pos()._h);
+          } else if (collision.normal.y <= 0 && this._jump) {
+            this._falling = false;
           }
-          if (collision.normal.y > 0) {
+          if (collision.normal.y > 1) {
+            console.log(collision.normal);
             this._falling = true;
             this.setAltitude(collision_entity.getAltitude() - collision_entity.pos()._h - this.pos()._h);
           }
         }
         if (this._falling === true) {
-          this._falling = true;
           this._fall_speed = this._fall_speed * this._accelleration;
           return this.setAltitude(Math.max(altitude - this._fall_speed, 0));
         }

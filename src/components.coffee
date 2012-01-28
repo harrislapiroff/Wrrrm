@@ -47,8 +47,13 @@ Crafty.c "Planet",
 		@origin @radius, @radius
 		
 		@bind "EnterFrame", () ->
+			
 			if @_rotating
 				@rotate()
+				
+			# theta should be mod 360
+			@_theta = @_theta % 360
+			
 			# update the DOM attributes to reflect the changes this frame
 			@attr {rotation: @_theta}
 	
@@ -96,6 +101,9 @@ Crafty.c "PlanetWalker",
 		@planet.bind "Rotated", (tdelta) => @rotateBy(tdelta)
 		
 		@bind "EnterFrame", () ->
+			# theta should be mod 360
+			@_theta = @_theta % 360
+			
 			# Refresh the altitude, rotation, and origin location
 			@attr
 				rotation: @_theta
@@ -107,7 +115,7 @@ Crafty.c "PlanetWalker",
 				@collision()
 	
 	rotateBy: (tdelta) ->
-		@_theta = @_theta + tdelta % 360
+		@_theta = @_theta + tdelta
 	
 	getAltitude: () ->
 		@_altitude
@@ -187,12 +195,14 @@ Crafty.c "PlanetGravity",
 				if collision.normal.y <= 0 and not @_jump
 					@_falling = false
 					@setAltitude collision_entity.getAltitude() + collision_entity.pos()._h
+				else if collision.normal.y <= 0 and @_jump
+					@_falling = false
 				# if you hit the bottom, fall
-				if collision.normal.y > 0
+				if collision.normal.y > 1
+					console.log collision.normal
 					@_falling = true
 					@setAltitude collision_entity.getAltitude() - collision_entity.pos()._h - @pos()._h
 			
 			if @_falling == true
-				@_falling = true
 				@_fall_speed = @_fall_speed * @_accelleration
 				@setAltitude Math.max(altitude - @_fall_speed, 0)
