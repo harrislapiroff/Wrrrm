@@ -92,6 +92,18 @@
         return this._stopspin();
       }, this));
     },
+    getRadius: function() {
+      return this.r;
+    },
+    getAltitude: function() {
+      return this.r - this.planet.radius - this.pos()._h;
+    },
+    setRadius: function(r) {
+      return this.position(this.theta, r);
+    },
+    setAltitude: function(a) {
+      return this.position(this.theta, a + this.planet.radius + this.pos()._h);
+    },
     _startspin: function(e) {
       return this.tween({
         rotation: this.theta - 360
@@ -120,21 +132,24 @@
   });
   Crafty.c("TwowayPlanetWalker", {
     _speed: 3,
-    _up: false,
+    _upspeed: 0,
     init: function() {
       return this.requires("PlanetWalker");
     },
-    twowayOnPlanet: function(planet, _speed, _up) {
+    twowayOnPlanet: function(planet, _speed, _upspeed) {
       this.planet = planet;
       this._speed = _speed;
-      this._up = _up;
+      this._upspeed = _upspeed;
       this.planetwalker(this.planet);
       this.bind("KeyDown", function(e) {
         if (e.key === Crafty.keys.LEFT_ARROW) {
           this._moveL = true;
         }
         if (e.key === Crafty.keys.RIGHT_ARROW) {
-          return this._moveR = true;
+          this._moveR = true;
+        }
+        if (e.key === Crafty.keys.UP_ARROW) {
+          return this._jump = true;
         }
       });
       this.bind("KeyUp", function(e) {
@@ -142,7 +157,10 @@
           this._moveL = false;
         }
         if (e.key === Crafty.keys.RIGHT_ARROW) {
-          return this._moveR = false;
+          this._moveR = false;
+        }
+        if (e.key === Crafty.keys.UP_ARROW) {
+          return this._jump = false;
         }
       });
       return this.bind("EnterFrame", function() {
@@ -150,12 +168,41 @@
           this._moveC(-this._speed);
         }
         if (this._moveR) {
-          return this._moveC(this._speed);
+          this._moveC(this._speed);
+        }
+        if (this._jump) {
+          return this._moveA(this._upspeed);
         }
       });
     },
+    _moveA: function(px) {
+      return this.setRadius(this.getRadius() + px);
+    },
     _moveC: function(px) {
       return this.setCircumferenceLocation(this.getCircumferenceLocation() + px);
+    }
+  });
+  Crafty.c("PlanetGravity", {
+    init: function() {
+      return this.requires("PlanetWalker");
+    },
+    planetGravity: function(_initial_fall_speed, _accelleration) {
+      this._initial_fall_speed = _initial_fall_speed != null ? _initial_fall_speed : 3;
+      this._accelleration = _accelleration != null ? _accelleration : 1.05;
+      this._fall_speed = this._initial_fall_speed;
+      return this.bind("EnterFrame", function() {
+        var altitude;
+        altitude = this.getAltitude();
+        if (altitude > 0) {
+          this._falling = true;
+          console.log(this._fall_speed);
+          this._fall_speed = this._fall_speed * this._accelleration;
+          return this.setAltitude(Math.max(altitude - this._fall_speed, 0));
+        } else {
+          this._falling = false;
+          return this._fall_speed = this._initial_fall_speed;
+        }
+      });
     }
   });
 }).call(this);

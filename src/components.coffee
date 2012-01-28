@@ -71,6 +71,18 @@ Crafty.c "PlanetWalker",
 		@planet.bind "StartSpin", () => @_startspin()
 		@planet.bind "StopSpin", () => @_stopspin()
 	
+	getRadius: () ->
+		@r
+	
+	getAltitude: () ->
+		@r - @planet.radius - @pos()._h
+		
+	setRadius: (r) ->
+		@position @theta, r
+	
+	setAltitude: (a) ->
+		@position @theta, a + @planet.radius + @pos()._h
+	
 	_startspin: (e) ->
 		@tween {rotation: @theta - 360}, @planet.rotation_frames
 	
@@ -96,12 +108,12 @@ Crafty.c "PlanetWalker",
 
 Crafty.c "TwowayPlanetWalker",
 	_speed: 3
-	_up: false
+	_upspeed: 0
 
 	init: () ->
 		@requires "PlanetWalker"
 	
-	twowayOnPlanet: (@planet, @_speed, @_up) ->
+	twowayOnPlanet: (@planet, @_speed, @_upspeed) ->
 		@planetwalker @planet
 		
 		@bind "KeyDown", (e) ->
@@ -109,18 +121,45 @@ Crafty.c "TwowayPlanetWalker",
 				@_moveL = true
 			if e.key == Crafty.keys.RIGHT_ARROW
 				@_moveR = true
+			if e.key == Crafty.keys.UP_ARROW
+				@_jump = true
 				
 		@bind "KeyUp", (e) ->
 			if e.key == Crafty.keys.LEFT_ARROW
 				@_moveL = false
 			if e.key == Crafty.keys.RIGHT_ARROW
 				@_moveR = false
+			if e.key == Crafty.keys.UP_ARROW
+				@_jump = false
 		
 		@bind "EnterFrame", () ->
 			if @_moveL
 				@_moveC(-@_speed)
 			if @_moveR
 				@_moveC(@_speed)
+			if @_jump
+				@_moveA(@_upspeed)
+	
+	_moveA: (px) ->
+		@setRadius @getRadius() + px
 	
 	_moveC: (px) ->
 		@setCircumferenceLocation @getCircumferenceLocation() + px
+
+Crafty.c "PlanetGravity",
+	
+	init: () ->
+		@requires "PlanetWalker"
+	
+	planetGravity: (@_initial_fall_speed=3, @_accelleration=1.05) ->
+		@_fall_speed = @_initial_fall_speed
+		@bind "EnterFrame", () ->
+			altitude = @getAltitude()
+			if altitude > 0
+				@_falling = true
+				console.log @_fall_speed
+				@_fall_speed = @_fall_speed * @_accelleration
+				@setAltitude Math.max(altitude - @_fall_speed, 0)
+			else
+				@_falling = false
+				@_fall_speed = @_initial_fall_speed

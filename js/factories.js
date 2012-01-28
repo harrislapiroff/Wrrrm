@@ -28,7 +28,7 @@
   };
   this.generate_protagonist = function(snake) {
     var ent;
-    ent = Crafty.e("2D, DOM, person, TwowayPlanetWalker, Gravity, Protagonist");
+    ent = Crafty.e("2D, DOM, person, TwowayPlanetWalker, PlanetGravity, Protagonist");
     ent.attr({
       x: (Crafty.viewport.width - 32) / 2,
       y: 20,
@@ -36,7 +36,7 @@
       h: 32
     });
     ent.twowayOnPlanet(snake, 3, 10);
-    return ent.gravity("Solid");
+    return ent.planetGravity();
   };
   this.generate_death = function(attrs) {
     var ent;

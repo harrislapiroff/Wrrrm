@@ -1,6 +1,6 @@
 (function() {
   var TESTING;
-  TESTING = true;
+  TESTING = false;
   Crafty.scene("loading", function() {
     var loading_text;
     loading_text = Crafty.e("2D, DOM, Text");

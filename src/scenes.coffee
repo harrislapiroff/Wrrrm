@@ -1,4 +1,4 @@
-TESTING = true
+TESTING = false
 
 Crafty.scene "loading", () ->
 	loading_text = Crafty.e "2D, DOM, Text"
