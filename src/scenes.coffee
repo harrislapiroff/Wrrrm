@@ -11,7 +11,7 @@ Crafty.scene "loading", () ->
 
 
 Crafty.scene "ouroboros", () ->
-	snake = generate_snake WORLD_RADIUS, 500
+	snake = generate_snake WORLD_RADIUS
 	snakehead = generate_snakehead snake, 100
 	
 	i = 100
@@ -22,7 +22,7 @@ Crafty.scene "ouroboros", () ->
 	KeyDownHandler = () ->
 		# keypress triggers the world to start spinning
 		unless TESTING
-			snake.startspin()
+			snake.startSpin -.25
 			# make spikes deadly
 			spikes = Crafty('spike')
 			for spike in spikes

@@ -1,6 +1,6 @@
-@generate_snake = (radius, rotation_frames) ->
+@generate_snake = (radius) ->
 	ent = Crafty.e "2D, DOM, Tween, Solid, Collision, Snake"
-	ent.snake radius, rotation_frames
+	ent.snake radius
 
 @generate_scale = (snake, loc, altitude) ->
 	ent = Crafty.e "2D, DOM, Scale, Tween, SnakePart"
@@ -10,16 +10,16 @@
 
 @generate_spike = (snake, loc) ->
 	ent = Crafty.e "2D, DOM, Tween, SnakePart, spike"
-	ent.snakepart snake, loc, 32
+	ent.snakepart snake, loc, -2
 
 @generate_snakehead = (snake, loc) ->
 	ent = Crafty.e "2D, DOM, Tween, SnakePart, snakehead"
-	ent.snakepart snake, loc, 30
+	ent.snakepart snake, loc, -5
 	
 @generate_protagonist = (snake) ->
 	ent = Crafty.e "2D, DOM, person, TwowayPlanetWalker, PlanetGravity, Protagonist"
 	ent.attr {x: (Crafty.viewport.width - 32) / 2, y: 20, w: 32, h:32}
-	ent.twowayOnPlanet snake, 3, 10
+	ent.twowayOnPlanet snake, 10, 10
 	ent.planetGravity()
 
 @generate_death = (attrs) ->

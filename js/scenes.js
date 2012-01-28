@@ -21,7 +21,7 @@
   });
   Crafty.scene("ouroboros", function() {
     var KeyDownHandler, i, protagonist, snake, snakehead;
-    snake = generate_snake(WORLD_RADIUS, 500);
+    snake = generate_snake(WORLD_RADIUS);
     snakehead = generate_snakehead(snake, 100);
     i = 100;
     while ((i + 900) < WORLD_CIRCUMFERENCE) {
@@ -31,7 +31,7 @@
     KeyDownHandler = function() {
       var spike, spikes, _i, _len;
       if (!TESTING) {
-        snake.startspin();
+        snake.startSpin(-.25);
         spikes = Crafty('spike');
         for (_i = 0, _len = spikes.length; _i < _len; _i++) {
           spike = spikes[_i];

@@ -16,29 +16,32 @@
     init: function() {
       return this.requires("2D, DOM, Tween, Planet");
     },
-    snake: function(radius, rotation_frames, stroke) {
-      this.radius = radius;
-      this.rotation_frames = rotation_frames;
-      this.stroke = stroke != null ? stroke : 40;
-      this.planet(this.radius, this.stroke);
-      return this.origin(this.radius, this.radius);
+    snake: function(radius, stroke) {
+      if (stroke == null) {
+        stroke = 40;
+      }
+      this.planet(radius, stroke);
+      return this.css({
+        'border-style': 'solid',
+        'border-color': '#000',
+        'background': 'transparent'
+      });
     }
   });
   Crafty.c("SnakePart", {
     init: function() {
       return this.requires("2D, DOM, Tween, PlanetWalker");
     },
-    snakepart: function(snake, circumference_location, altitude) {
-      this.snake = snake;
-      this.circumference_location = circumference_location;
-      this.altitude = altitude != null ? altitude : 0;
-      this.planetwalker(this.snake, 0, this.altitude + this.snake.radius);
-      return this.setCircumferenceLocation(this.circumference_location);
+    snakepart: function(snake, surface_location, altitude) {
+      return this.planetwalker(snake, surface_location, altitude);
     }
   });
   Crafty.c("Planet", {
+    _rotation_speed: 1,
+    _rotating: false,
+    _theta: 0,
     init: function() {
-      return this.requires("2D, DOM, Tween");
+      return this.requires("2D, DOM");
     },
     planet: function(radius, stroke) {
       this.radius = radius;
@@ -49,22 +52,34 @@
         w: (this.radius - this.stroke) * 2,
         h: (this.radius - this.stroke) * 2
       });
-      return this.css({
+      this.css({
         'border-radius': this.radius,
-        'border': "" + this.stroke + "px solid #000"
+        'border-width': "" + this.stroke + "px"
+      });
+      this.origin(this.radius, this.radius);
+      return this.bind("EnterFrame", function() {
+        if (this._rotating) {
+          this.rotate();
+        }
+        return this.attr({
+          rotation: this._theta
+        });
       });
     },
-    startspin: function() {
-      this.attr({
-        rotation: 0
-      });
-      this.tween({
-        rotation: -360
-      }, this.rotation_frames);
-      return this.trigger("StartSpin");
+    rotate: function() {
+      var old_theta;
+      old_theta = this._theta;
+      this._theta = (this._theta + this._rotation_speed) % 360;
+      return this.trigger("Rotated", this._theta - old_theta);
     },
-    stopspin: function() {
-      return this.trigger("StopSpin");
+    startSpin: function(_rotation_speed) {
+      this._rotation_speed = _rotation_speed != null ? _rotation_speed : this._rotation_speed;
+      this._rotating = true;
+      return this.trigger("StartRotation");
+    },
+    stopSpin: function() {
+      this._rotating = false;
+      return this.trigger("StopRotation");
     },
     getCartesianCoords: function() {
       return this.pos();
@@ -74,60 +89,53 @@
     }
   });
   Crafty.c("PlanetWalker", {
+    _theta: 0,
+    _altitude: 0,
     init: function() {
       return this.requires("2D, DOM, Tween");
     },
-    planetwalker: function(planet, theta, r) {
+    planetwalker: function(planet, surface_location, altitude) {
       this.planet = planet;
-      this.theta = theta != null ? theta : 0;
-      this.r = r != null ? r : false;
-      if (!this.r) {
-        this.r = this.planet.radius + this.pos()._h;
+      if (surface_location == null) {
+        surface_location = false;
       }
-      this.position(this.theta, this.r);
-      this.planet.bind("StartSpin", __bind(function() {
-        return this._startspin();
-      }, this));
-      return this.planet.bind("StopSpin", __bind(function() {
-        return this._stopspin();
-      }, this));
-    },
-    getRadius: function() {
-      return this.r;
-    },
-    getAltitude: function() {
-      return this.r - this.planet.radius - this.pos()._h;
-    },
-    setRadius: function(r) {
-      return this.position(this.theta, r);
-    },
-    setAltitude: function(a) {
-      return this.position(this.theta, a + this.planet.radius + this.pos()._h);
-    },
-    _startspin: function(e) {
-      return this.tween({
-        rotation: this.theta - 360
-      }, this.planet.rotation_frames);
-    },
-    _stopspin: function() {},
-    position: function(theta, r) {
-      this.theta = theta;
-      this.r = r;
-      this.altitude = this.r - this.planet.radius;
-      this.origin(this.pos()._w / 2, this.planet.radius + this.altitude);
-      return this.attr({
-        rotation: this.theta,
-        y: this.planet.pos()._y - this.altitude,
+      if (altitude == null) {
+        altitude = false;
+      }
+      if (altitude) {
+        this._altitude = altitude;
+      }
+      if (surface_location) {
+        this.setSurfaceLocation(surface_location);
+      }
+      this.attr({
         x: (Crafty.viewport.width - this.pos()._w) / 2
       });
+      this.origin(this.pos()._w / 2, this.planet.radius + this._altitude);
+      this.planet.bind("Rotated", __bind(function(tdelta) {
+        return this.rotateBy(tdelta);
+      }, this));
+      return this.bind("EnterFrame", function() {
+        return this.attr({
+          rotation: this._theta,
+          y: this.planet.pos()._y - this._altitude - this.pos()._h
+        });
+      });
     },
-    setCircumferenceLocation: function(circumference_location) {
-      var theta;
-      theta = circumference_location * 360 / this.planet.circumference();
-      return this.position(theta, this.r);
+    rotateBy: function(tdelta) {
+      return this._theta = this._theta + tdelta;
+    },
+    getAltitude: function() {
+      return this._altitude;
+    },
+    setAltitude: function(a) {
+      return this._altitude = a;
+    },
+    setSurfaceLocation: function(surface_location) {
+      return this._theta = surface_location * 360 / this.planet.circumference();
     },
     getCircumferenceLocation: function() {
-      return this.theta * this.planet.circumference() / 360;
+      return this._theta * this.planet.circumference() / 360;
     }
   });
   Crafty.c("TwowayPlanetWalker", {
@@ -176,10 +184,10 @@
       });
     },
     _moveA: function(px) {
-      return this.setRadius(this.getRadius() + px);
+      return this.setAltitude(this.getAltitude() + px);
     },
     _moveC: function(px) {
-      return this.setCircumferenceLocation(this.getCircumferenceLocation() + px);
+      return this.setSurfaceLocation(this.getCircumferenceLocation() + px);
     }
   });
   Crafty.c("PlanetGravity", {
@@ -195,7 +203,6 @@
         altitude = this.getAltitude();
         if (altitude > 0) {
           this._falling = true;
-          console.log(this._fall_speed);
           this._fall_speed = this._fall_speed * this._accelleration;
           return this.setAltitude(Math.max(altitude - this._fall_speed, 0));
         } else {
