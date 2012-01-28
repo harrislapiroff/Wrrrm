@@ -11,8 +11,20 @@ Crafty.scene "loading", () ->
 Crafty.scene "ouroboros", () ->
 	Crafty.background('#CCC')
 	snake = generate_snake 8000, 5000
+	generate_spike snake, 400
+		
+	KeyDownHandler = () ->
+		# keypress triggers the world to start spinning
+		snake.startspin()
+		# make spikes deadly
+		spikes = Crafty('spike')
+		for spike in spikes
+			Crafty(spike).addComponent 'Deadly'
+		# unbind the keypress
+		Crafty.unbind "KeyDown", KeyDownHandler
+	
+	Crafty.bind "KeyDown", KeyDownHandler
+	
 	protagonist = generate_protagonist()
-	scale = generate_scale snake, 300, 10
-	snake.startspin()
 	protagonist.bind "Died", () ->
 		Crafty.scene "ouroboros"

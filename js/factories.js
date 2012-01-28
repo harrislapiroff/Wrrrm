@@ -26,6 +26,11 @@
       'background-color': '#FFF'
     });
   };
+  this.generate_spike = function(snake, loc) {
+    var ent;
+    ent = Crafty.e("2D, DOM, Tween, SnakePart, spike");
+    return ent.snakepart(snake, loc, 32);
+  };
   this.generate_protagonist = function() {
     var ent;
     ent = Crafty.e("2D, DOM, person, Twoway, Gravity, Protagonist");
@@ -35,12 +40,12 @@
       w: 32,
       h: 32
     });
-    ent.twoway(0, 6);
+    ent.twoway(0, 10);
     return ent.gravity("Solid");
   };
   this.generate_death = function(attrs) {
     var ent;
-    ent = Crafty.e("2D, DOM, Death");
+    ent = Crafty.e("2D, DOM, Deadly");
     return ent.attr(attrs);
   };
 }).call(this);

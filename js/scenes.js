@@ -18,12 +18,22 @@
     });
   });
   Crafty.scene("ouroboros", function() {
-    var protagonist, scale, snake;
+    var KeyDownHandler, protagonist, snake;
     Crafty.background('#CCC');
     snake = generate_snake(8000, 5000);
+    generate_spike(snake, 400);
+    KeyDownHandler = function() {
+      var spike, spikes, _i, _len;
+      snake.startspin();
+      spikes = Crafty('spike');
+      for (_i = 0, _len = spikes.length; _i < _len; _i++) {
+        spike = spikes[_i];
+        Crafty(spike).addComponent('Deadly');
+      }
+      return Crafty.unbind("KeyDown", KeyDownHandler);
+    };
+    Crafty.bind("KeyDown", KeyDownHandler);
     protagonist = generate_protagonist();
-    scale = generate_scale(snake, 300, 10);
-    snake.startspin();
     return protagonist.bind("Died", function() {
       return Crafty.scene("ouroboros");
     });

@@ -3,7 +3,7 @@
   Crafty.c("Protagonist", {
     init: function() {
       this.requires("2D, DOM, Collision");
-      this.onHit("Death", this.die);
+      this.onHit("Deadly", this.die);
       return this.onHit("Scale", function() {
         return console.log("Hit a scale.");
       });
@@ -42,15 +42,19 @@
       return this.requires("2D, DOM, Tween");
     },
     snakepart: function(snake, circumference_location, altitude) {
+      var pos, snake_pos;
       this.snake = snake;
       this.circumference_location = circumference_location;
       this.altitude = altitude != null ? altitude : 0;
+      this.initial_rotation = this.circumference_location * 360 / this.snake.circumference();
+      snake_pos = this.snake.pos();
+      pos = this.pos();
       this.attr({
-        rotation: this.circumference_location * 360 / this.snake.circumference(),
-        y: this.snake.pos()._y - this.altitude,
-        x: this.snake.pos()._x + (this.snake.pos()._w + this.pos()._w) / 2
+        rotation: this.initial_rotation,
+        y: snake_pos._y - this.altitude,
+        x: snake_pos._x + (snake_pos._w + pos._w) / 2
       });
-      this.origin(this.pos()._w / 2, (this.snake.pos()._h) / 2 + this.altitude);
+      this.origin(pos._w / 2, snake_pos._h / 2 + this.altitude);
       this.snake.bind("StartSpin", __bind(function() {
         return this._startspin();
       }, this));
@@ -60,7 +64,7 @@
     },
     _startspin: function(e) {
       this.attr({
-        rotation: 0
+        rotation: this.initial_rotation
       });
       return this.tween({
         rotation: -360
