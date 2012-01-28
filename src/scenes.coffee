@@ -1,12 +1,17 @@
 TESTING = false
 
 Crafty.scene "loading", () ->
+	title_text = Crafty.e "2D, DOM, Text, Persist"
+	title_text.attr w: Crafty.viewport.width, h: 128, x: 0, y: 40
+	title_text.text GAME_TITLE
+	title_text.css "text-align": "center", "color": "#000", "font-family": "Medula One", "font-size": 128, "text-transform": "uppercase"
+	
 	loading_text = Crafty.e "2D, DOM, Text"
 	loading_text.attr w: Crafty.viewport.width, h: 20, x: 0, y: (Crafty.viewport.width - 20) / 2
 	loading_text.text "Loading..."
 	loading_text.css "text-align": "center", "color": "#000"
 	
-	Crafty.load ["img/person.png"], () ->
+	Crafty.load ["img/person.png", "img/noise.png","img/spike.png"], () ->
 		Crafty.scene("ouroboros")
 
 

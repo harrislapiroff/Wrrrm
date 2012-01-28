@@ -2,7 +2,22 @@
   var TESTING;
   TESTING = false;
   Crafty.scene("loading", function() {
-    var loading_text;
+    var loading_text, title_text;
+    title_text = Crafty.e("2D, DOM, Text, Persist");
+    title_text.attr({
+      w: Crafty.viewport.width,
+      h: 128,
+      x: 0,
+      y: 40
+    });
+    title_text.text(GAME_TITLE);
+    title_text.css({
+      "text-align": "center",
+      "color": "#000",
+      "font-family": "Medula One",
+      "font-size": 128,
+      "text-transform": "uppercase"
+    });
     loading_text = Crafty.e("2D, DOM, Text");
     loading_text.attr({
       w: Crafty.viewport.width,
@@ -15,7 +30,7 @@
       "text-align": "center",
       "color": "#000"
     });
-    return Crafty.load(["img/person.png"], function() {
+    return Crafty.load(["img/person.png", "img/noise.png", "img/spike.png"], function() {
       return Crafty.scene("ouroboros");
     });
   });
