@@ -2,11 +2,10 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Crafty.c("Protagonist", {
     init: function() {
-      this.requires("2D, DOM, Collision");
-      this.onHit("Deadly", this.die);
-      return this.onHit("Scale", function() {
-        return console.log("Hit a scale.");
-      });
+      return this.requires("2D, DOM, Collision");
+    },
+    mortality: function() {
+      return this.onHit("Deadly", this.die);
     },
     die: function() {
       return this.trigger("Died");

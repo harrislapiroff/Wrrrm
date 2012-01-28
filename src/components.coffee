@@ -1,9 +1,10 @@
 Crafty.c "Protagonist",
 	init: () ->
 		@requires "2D, DOM, Collision"
+	
+	mortality: () ->
 		@onHit "Deadly", @die
-		@onHit "Scale", () ->
-			console.log "Hit a scale."
+	
 	die: () ->
 		@trigger("Died")
 
