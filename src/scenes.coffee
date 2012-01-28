@@ -12,8 +12,10 @@ Crafty.scene "ouroboros", () ->
 	Crafty.background('#CCC')
 	snake = generate_snake 8000, 5000
 	
-	for i in [0..50]
-		generate_spike snake, Crafty.math.randomInt 100, WORLD_CIRCUMFERENCE
+	i = 100
+	while i < WORLD_CIRCUMFERENCE
+		i = Crafty.math.randomInt i+300, i + 900
+		generate_spike snake, i
 		
 	KeyDownHandler = () ->
 		# keypress triggers the world to start spinning
