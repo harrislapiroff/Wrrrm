@@ -31,6 +31,16 @@
     ent.twowayOnPlanet(snake, 10, 10);
     return ent.planetGravity();
   };
+  this.generate_platform = function(snake, loc, attrs) {
+    var ent;
+    ent = Crafty.e("2D, DOM, Platform, PlanetWalker, Collision");
+    ent.css({
+      'background-color': '#000',
+      'border-radius': 3
+    });
+    ent.attr(attrs);
+    return ent.planetwalker(snake, loc, 20);
+  };
   this.generate_death = function(attrs) {
     var ent;
     ent = Crafty.e("2D, DOM, Deadly, Collision");
