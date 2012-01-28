@@ -1,34 +1,34 @@
 (function() {
   this.generate_snake = function(radius) {
     var ent;
-    ent = Crafty.e("2D, DOM, Tween, Solid, Snake, Collision, Platform");
-    ent.collision();
+    ent = Crafty.e("2D, DOM, Tween, Solid, Snake");
     return ent.snake(radius);
   };
   this.generate_spike = function(snake, loc) {
     var ent;
-    ent = Crafty.e("2D, DOM, Tween, SnakePart, spike, Collision, Deadly");
-    ent.collision();
-    return ent.snakepart(snake, loc, -2);
+    ent = Crafty.e("2D, DOM, Tween, PlanetWalker, spike, Collision, Deadly");
+    ent.planetwalker(snake, loc, -2);
+    return ent.collision();
   };
   this.generate_snakehead = function(snake, loc) {
     var ent;
-    ent = Crafty.e("2D, DOM, Tween, SnakePart, snakehead, Collision, Deadly");
-    ent.collision();
-    return ent.snakepart(snake, loc, -5);
+    ent = Crafty.e("2D, DOM, Tween, PlanetWalker, snakehead, Collision, Deadly");
+    ent.planetwalker(snake, loc, -5);
+    return ent.collision();
   };
   this.generate_protagonist = function(snake) {
     var ent;
     ent = Crafty.e("2D, DOM, person, TwowayPlanetWalker, PlanetGravity, Protagonist, Collision");
-    ent.collision();
     ent.attr({
       x: (Crafty.viewport.width - 32) / 2,
       y: 20,
       w: 32,
       h: 32
     });
+    ent.planetwalker(snake, 10, 0);
     ent.twowayOnPlanet(snake, 10, 10);
-    return ent.planetGravity("Platform");
+    ent.planetGravity("Platform");
+    return ent.collision();
   };
   this.generate_platform = function(snake, loc, attrs, altitude) {
     var ent;

@@ -20,15 +20,6 @@ Crafty.c "Snake"
 			'border-color': '#000'
 			'background': 'transparent'
 
-
-Crafty.c "SnakePart",
-	init: () ->
-		@requires "2D, DOM, Tween, PlanetWalker"
-		
-	snakepart: (snake, surface_location, altitude) ->
-		# initialize the planetwalkerness
-		@planetwalker snake, surface_location, altitude
-
 Crafty.c "Planet",
 	_rotation_speed: 1
 	_rotating: false
@@ -59,7 +50,7 @@ Crafty.c "Planet",
 	
 	rotate: () ->
 		old_theta = @_theta
-		@_theta = (@_theta + @_rotation_speed) % 360
+		@_theta = @_theta + @_rotation_speed
 		
 		# trigger the Rotated event and pass the tdelta
 		@trigger "Rotated",  @_theta - old_theta
@@ -110,9 +101,6 @@ Crafty.c "PlanetWalker",
 				y: @planet.pos()._y - @_altitude - @pos()._h
 			
 			@origin @pos()._w/2, @planet.radius + @_altitude + @pos()._h
-			
-			if @collision
-				@collision()
 	
 	rotateBy: (tdelta) ->
 		@_theta = @_theta + tdelta
@@ -122,7 +110,10 @@ Crafty.c "PlanetWalker",
 		
 	setAltitude: (a) ->
 		@_altitude = a
-	
+		@origin @pos()._w/2, @planet.radius + @_altitude + @pos()._h
+		if @collision
+			@collision()
+			
 	setSurfaceLocation: (surface_location) ->
 		@_theta = surface_location * 360 / @planet.circumference()
 	
@@ -137,7 +128,6 @@ Crafty.c "TwowayPlanetWalker",
 		@requires "PlanetWalker"
 	
 	twowayOnPlanet: (@planet, @_speed, @_upspeed) ->
-		@planetwalker @planet
 		
 		@bind "KeyDown", (e) ->
 			if e.key == Crafty.keys.LEFT_ARROW
@@ -191,17 +181,8 @@ Crafty.c "PlanetGravity",
 				collision = @hit(@_collision_selector)[0]
 				collision_entity = collision.obj
 				collision_normal = collision.normal
-				# if you hit the top of the platform, stay there
-				if collision.normal.y <= 0 and not @_jump
+				if @getAltitude() > collision_entity.getAltitude() - 3
 					@_falling = false
-					@setAltitude collision_entity.getAltitude() + collision_entity.pos()._h
-				else if collision.normal.y <= 0 and @_jump
-					@_falling = false
-				# if you hit the bottom, fall
-				if collision.normal.y > 1
-					console.log collision.normal
-					@_falling = true
-					@setAltitude collision_entity.getAltitude() - collision_entity.pos()._h - @pos()._h
 			
 			if @_falling == true
 				@_fall_speed = @_fall_speed * @_accelleration

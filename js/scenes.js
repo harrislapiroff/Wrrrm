@@ -40,7 +40,7 @@
     snakehead = generate_snakehead(snake, 100);
     death_floor = generate_death({
       x: -1000,
-      y: Crafty.viewport.height - 1,
+      y: Crafty.viewport.height + 30,
       w: Crafty.viewport.width + 2000,
       h: 1
     });

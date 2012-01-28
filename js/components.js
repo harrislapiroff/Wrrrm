@@ -27,14 +27,6 @@
       });
     }
   });
-  Crafty.c("SnakePart", {
-    init: function() {
-      return this.requires("2D, DOM, Tween, PlanetWalker");
-    },
-    snakepart: function(snake, surface_location, altitude) {
-      return this.planetwalker(snake, surface_location, altitude);
-    }
-  });
   Crafty.c("Planet", {
     _rotation_speed: 1,
     _rotating: false,
@@ -69,7 +61,7 @@
     rotate: function() {
       var old_theta;
       old_theta = this._theta;
-      this._theta = (this._theta + this._rotation_speed) % 360;
+      this._theta = this._theta + this._rotation_speed;
       return this.trigger("Rotated", this._theta - old_theta);
     },
     startSpin: function(_rotation_speed) {
@@ -120,10 +112,7 @@
           rotation: this._theta,
           y: this.planet.pos()._y - this._altitude - this.pos()._h
         });
-        this.origin(this.pos()._w / 2, this.planet.radius + this._altitude + this.pos()._h);
-        if (this.collision) {
-          return this.collision();
-        }
+        return this.origin(this.pos()._w / 2, this.planet.radius + this._altitude + this.pos()._h);
       });
     },
     rotateBy: function(tdelta) {
@@ -133,7 +122,11 @@
       return this._altitude;
     },
     setAltitude: function(a) {
-      return this._altitude = a;
+      this._altitude = a;
+      this.origin(this.pos()._w / 2, this.planet.radius + this._altitude + this.pos()._h);
+      if (this.collision) {
+        return this.collision();
+      }
     },
     setSurfaceLocation: function(surface_location) {
       return this._theta = surface_location * 360 / this.planet.circumference();
@@ -152,7 +145,6 @@
       this.planet = planet;
       this._speed = _speed;
       this._upspeed = _upspeed;
-      this.planetwalker(this.planet);
       this.bind("KeyDown", function(e) {
         if (e.key === Crafty.keys.LEFT_ARROW) {
           this._moveL = true;
@@ -216,16 +208,8 @@
           collision = this.hit(this._collision_selector)[0];
           collision_entity = collision.obj;
           collision_normal = collision.normal;
-          if (collision.normal.y <= 0 && !this._jump) {
+          if (this.getAltitude() > collision_entity.getAltitude() - 3) {
             this._falling = false;
-            this.setAltitude(collision_entity.getAltitude() + collision_entity.pos()._h);
-          } else if (collision.normal.y <= 0 && this._jump) {
-            this._falling = false;
-          }
-          if (collision.normal.y > 1) {
-            console.log(collision.normal);
-            this._falling = true;
-            this.setAltitude(collision_entity.getAltitude() - collision_entity.pos()._h - this.pos()._h);
           }
         }
         if (this._falling === true) {
