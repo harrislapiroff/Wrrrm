@@ -161,14 +161,19 @@ Crafty.c "PlanetGravity",
 	init: () ->
 		@requires "PlanetWalker"
 	
-	planetGravity: (@_initial_fall_speed=3, @_accelleration=1.05) ->
+	planetGravity: (@_collision_selector=false, @_initial_fall_speed=3, @_accelleration=1.05) ->
 		@_fall_speed = @_initial_fall_speed
 		@bind "EnterFrame", () ->
 			altitude = @getAltitude()
-			if altitude > 0
+			
+			if altitude > 0 and not @hit(@_collision_selector)
+				@_falling = true
+				
+			if altitude <= 0
+				@_falling = false
+				@_fall_speed = @_initial_fall_speed
+			
+			if @_falling == true
 				@_falling = true
 				@_fall_speed = @_fall_speed * @_accelleration
 				@setAltitude Math.max(altitude - @_fall_speed, 0)
-			else
-				@_falling = false
-				@_fall_speed = @_initial_fall_speed

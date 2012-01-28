@@ -194,20 +194,25 @@
     init: function() {
       return this.requires("PlanetWalker");
     },
-    planetGravity: function(_initial_fall_speed, _accelleration) {
+    planetGravity: function(_collision_selector, _initial_fall_speed, _accelleration) {
+      this._collision_selector = _collision_selector != null ? _collision_selector : false;
       this._initial_fall_speed = _initial_fall_speed != null ? _initial_fall_speed : 3;
       this._accelleration = _accelleration != null ? _accelleration : 1.05;
       this._fall_speed = this._initial_fall_speed;
       return this.bind("EnterFrame", function() {
         var altitude;
         altitude = this.getAltitude();
-        if (altitude > 0) {
+        if (altitude > 0 && !this.hit(this._collision_selector)) {
+          this._falling = true;
+        }
+        if (altitude <= 0) {
+          this._falling = false;
+          this._fall_speed = this._initial_fall_speed;
+        }
+        if (this._falling === true) {
           this._falling = true;
           this._fall_speed = this._fall_speed * this._accelleration;
           return this.setAltitude(Math.max(altitude - this._fall_speed, 0));
-        } else {
-          this._falling = false;
-          return this._fall_speed = this._initial_fall_speed;
         }
       });
     }
