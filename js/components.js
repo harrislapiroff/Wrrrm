@@ -53,19 +53,21 @@
       return this.requires("2D, DOM, Tween");
     },
     snakepart: function(snake, circumference_location, altitude) {
-      var pos, snake_pos;
+      var pos, snake_d, snake_pos, snake_r;
       this.snake = snake;
       this.circumference_location = circumference_location;
       this.altitude = altitude != null ? altitude : 0;
       this.initial_rotation = this.circumference_location * 360 / this.snake.circumference();
       snake_pos = this.snake.pos();
+      snake_r = this.snake.radius;
+      snake_d = snake_r * 2;
       pos = this.pos();
       this.attr({
         rotation: this.initial_rotation,
         y: snake_pos._y - this.altitude,
-        x: snake_pos._x + (snake_pos._w + pos._w) / 2
+        x: (Crafty.viewport.width - pos._w) / 2
       });
-      this.origin(pos._w / 2, snake_pos._h / 2 + this.altitude);
+      this.origin(pos._w / 2, snake_d / 2 + this.altitude);
       this.snake.bind("StartSpin", __bind(function() {
         return this._startspin();
       }, this));

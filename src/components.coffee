@@ -46,13 +46,15 @@ Crafty.c "SnakePart",
 		
 		# cache, briefly, the position variables
 		snake_pos = @snake.pos()
+		snake_r = @snake.radius
+		snake_d = snake_r*2
 		pos = @pos()
 		
 		# rotate the entity to be at the correct location on the snake
-		@attr {rotation: @initial_rotation, y: snake_pos._y-@altitude, x: snake_pos._x+(snake_pos._w+pos._w)/2}
+		@attr {rotation: @initial_rotation, y: snake_pos._y-@altitude, x: (Crafty.viewport.width - pos._w)/2}
 		
 		# set the origin to the center of the snake
-		@origin pos._w/2, snake_pos._h/2 + @altitude
+		@origin pos._w/2, snake_d/2 + @altitude
 		
 		# bind the spinning to the snake spinning
 		@snake.bind "StartSpin", () => @_startspin()
