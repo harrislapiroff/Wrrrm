@@ -8,10 +8,14 @@
 	ent.collision()
 
 @generate_snakehead = (snake, loc) ->
-	ent = Crafty.e "2D, DOM, Collision, Tween, PlanetWalker, snakehead, Deadly"
-	ent.planetwalker snake, loc, -5
-	ent.collision()
-
+	# create the snake separate from death
+	death = Crafty.e "2D, DOM, Collision, PlanetWalker, Deadly, Persist"
+	death.attr {w: 20, h: 20}
+	death.planetwalker snake, loc
+	death.collision()
+	# now the snake
+	ent = Crafty.e "2D, DOM, Tween, PlanetWalker, snakehead"
+	ent.planetwalker snake, loc, -55
 @generate_protagonist = (snake) ->
 	ent = Crafty.e "2D, DOM, Collision, person, TwowayPlanetWalker, PlanetGravity, Protagonist"
 	ent.attr {x: (Crafty.viewport.width - 32) / 2, y: 20, w: 32, h: 32}

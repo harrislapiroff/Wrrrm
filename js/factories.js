@@ -11,10 +11,16 @@
     return ent.collision();
   };
   this.generate_snakehead = function(snake, loc) {
-    var ent;
-    ent = Crafty.e("2D, DOM, Collision, Tween, PlanetWalker, snakehead, Deadly");
-    ent.planetwalker(snake, loc, -5);
-    return ent.collision();
+    var death, ent;
+    death = Crafty.e("2D, DOM, Collision, PlanetWalker, Deadly, Persist");
+    death.attr({
+      w: 20,
+      h: 20
+    });
+    death.planetwalker(snake, loc);
+    death.collision();
+    ent = Crafty.e("2D, DOM, Tween, PlanetWalker, snakehead");
+    return ent.planetwalker(snake, loc, -55);
   };
   this.generate_protagonist = function(snake) {
     var ent;

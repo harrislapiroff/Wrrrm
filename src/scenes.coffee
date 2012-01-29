@@ -73,6 +73,7 @@ Crafty.scene "Setup", () ->
 	protagonist.bind "Moved", MovedHandler
 
 Crafty.scene "Scene 1", () ->
+	# Gray
 	# a basic level that gradually speeds up and has a couple platforms, basically a tutorial
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
@@ -99,6 +100,7 @@ Crafty.scene "Scene 1", () ->
 		Crafty.scene "Scene 2"
 
 Crafty.scene "Scene 2", () ->
+	# Yellow
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
 	color_shift(60, 70, 50)
@@ -111,6 +113,7 @@ Crafty.scene "Scene 2", () ->
 		Crafty.scene "Scene 3"
 
 Crafty.scene "Scene 3", () ->
+	# Denim Blue
 	# a level with some spikes in the middle that are too close together to jump over, so you must use the clouds
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
@@ -128,6 +131,7 @@ Crafty.scene "Scene 3", () ->
 
 
 Crafty.scene "Scene 4", () ->
+	# Red
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
 	color_shift(0, 90, 30)
@@ -140,6 +144,7 @@ Crafty.scene "Scene 4", () ->
 		Crafty.scene "Scene 5"
 
 Crafty.scene "Scene 5", () ->
+	# Violet
 	# A straight up fast level with no enemies. Just don't fall off the back.
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
@@ -150,6 +155,7 @@ Crafty.scene "Scene 5", () ->
 		Crafty.scene "Scene 6"
 		
 Crafty.scene "Scene 6", () ->
+	# Peach
 	# Still slightly faster than you can run, but with spikes.
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
