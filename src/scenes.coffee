@@ -159,13 +159,74 @@ Crafty.scene "Scene 6", () ->
 		generate_spike snake, i
 
 	snake.bind "CompleteRotation", () ->
+		Crafty.scene "Scene 7"
+
+Crafty.scene "Scene 7", () ->
+	# Pale Green
+	# You have to jump on clouds to survive
+	snake = Crafty(Crafty("Snake")[0])
+	protagonist = Crafty(Crafty("Protagonist")[0])
+	color_shift(100, 30, 60)
+	snake.startSpin -.4
+
+	generate_platform snake, 800, 40
+	generate_platform snake, 1000, 80
+	generate_platform snake, 1200, 120
+	generate_platform snake, 1400, 160
+	generate_platform snake, 1600, 200
+	generate_platform snake, 1800, 240
+	generate_platform snake, 2000, 240
+	generate_platform snake, 2200, 300
+
+	for i in [825, 850, 900, 1500, 1600, 2200, 2250, 2300, 2350, 2400, 2450, 2500, 2550, 2600, 3800, 3850, 3900, 4300, 4700, 5100, 5500]
+		generate_spike snake, i
+
+	snake.bind "CompleteRotation", () ->
+		Crafty.scene "Scene 8"
+
+Crafty.scene "Scene 8", () ->
+	# Peach
+	# Still slightly faster than you can run, but with spikes.
+	snake = Crafty(Crafty("Snake")[0])
+	protagonist = Crafty(Crafty("Protagonist")[0])
+	color_shift(25, 90, 60)
+	snake.delay (() -> @startSpin -.4), 200
+	snake.delay (() -> @startSpin -.2), 400
+	snake.delay (() -> @stopSpin), 600
+	snake.delay (() -> @startSpin .4), 1000
+
+	# Pale Green
+	# You have to jump on clouds to survive
+	snake = Crafty(Crafty("Snake")[0])
+	protagonist = Crafty(Crafty("Protagonist")[0])
+	color_shift(100, 30, 60)
+	snake.startSpin -.4
+
+	generate_platform snake, 800, 40
+	generate_platform snake, 1000, 80
+	generate_platform snake, 1200, 120
+	generate_platform snake, 1400, 160
+	generate_platform snake, 1600, 200
+	generate_platform snake, 1800, 240
+	generate_platform snake, 2000, 240
+	generate_platform snake, 2200, 300
+	generate_platform snake, 2600, 200
+	generate_platform snake, 3000, 240
+	generate_platform snake, 3250, 180
+	generate_platform snake, 3500, 180
+	generate_platform snake, 3800, 60
+	generate_platform snake, 4000, 60
+
+	for i in [825, 850, 900, 1500, 1600, 2200, 2250, 2300, 2350, 2400, 2450, 2500, 2550, 2600, 3800, 3850, 3900, 4300, 4700, 5100, 5500]
+		generate_spike snake, i
+	
+	snake.bind "CompleteRotation", () ->
 		Crafty.scene "Scene 100"
 
 Crafty.scene "Scene 100", () ->
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
 	protagonist.immortality()
-	protagonist.destroy()
 	snake.startSpin -.6
 	color_shift(255, 255, 255)
 	title_text = Crafty(Crafty("Title")[0])

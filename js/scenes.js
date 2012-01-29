@@ -198,6 +198,73 @@
       generate_spike(snake, i);
     }
     return snake.bind("CompleteRotation", function() {
+      return Crafty.scene("Scene 7");
+    });
+  });
+  Crafty.scene("Scene 7", function() {
+    var i, protagonist, snake, _i, _len, _ref;
+    snake = Crafty(Crafty("Snake")[0]);
+    protagonist = Crafty(Crafty("Protagonist")[0]);
+    color_shift(100, 30, 60);
+    snake.startSpin(-.4);
+    generate_platform(snake, 800, 40);
+    generate_platform(snake, 1000, 80);
+    generate_platform(snake, 1200, 120);
+    generate_platform(snake, 1400, 160);
+    generate_platform(snake, 1600, 200);
+    generate_platform(snake, 1800, 240);
+    generate_platform(snake, 2000, 240);
+    generate_platform(snake, 2200, 300);
+    _ref = [825, 850, 900, 1500, 1600, 2200, 2250, 2300, 2350, 2400, 2450, 2500, 2550, 2600, 3800, 3850, 3900, 4300, 4700, 5100, 5500];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      i = _ref[_i];
+      generate_spike(snake, i);
+    }
+    return snake.bind("CompleteRotation", function() {
+      return Crafty.scene("Scene 8");
+    });
+  });
+  Crafty.scene("Scene 8", function() {
+    var i, protagonist, snake, _i, _len, _ref;
+    snake = Crafty(Crafty("Snake")[0]);
+    protagonist = Crafty(Crafty("Protagonist")[0]);
+    color_shift(25, 90, 60);
+    snake.delay((function() {
+      return this.startSpin(-.4);
+    }), 200);
+    snake.delay((function() {
+      return this.startSpin(-.2);
+    }), 400);
+    snake.delay((function() {
+      return this.stopSpin;
+    }), 600);
+    snake.delay((function() {
+      return this.startSpin(.4);
+    }), 1000);
+    snake = Crafty(Crafty("Snake")[0]);
+    protagonist = Crafty(Crafty("Protagonist")[0]);
+    color_shift(100, 30, 60);
+    snake.startSpin(-.4);
+    generate_platform(snake, 800, 40);
+    generate_platform(snake, 1000, 80);
+    generate_platform(snake, 1200, 120);
+    generate_platform(snake, 1400, 160);
+    generate_platform(snake, 1600, 200);
+    generate_platform(snake, 1800, 240);
+    generate_platform(snake, 2000, 240);
+    generate_platform(snake, 2200, 300);
+    generate_platform(snake, 2600, 200);
+    generate_platform(snake, 3000, 240);
+    generate_platform(snake, 3250, 180);
+    generate_platform(snake, 3500, 180);
+    generate_platform(snake, 3800, 60);
+    generate_platform(snake, 4000, 60);
+    _ref = [825, 850, 900, 1500, 1600, 2200, 2250, 2300, 2350, 2400, 2450, 2500, 2550, 2600, 3800, 3850, 3900, 4300, 4700, 5100, 5500];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      i = _ref[_i];
+      generate_spike(snake, i);
+    }
+    return snake.bind("CompleteRotation", function() {
       return Crafty.scene("Scene 100");
     });
   });
@@ -206,7 +273,6 @@
     snake = Crafty(Crafty("Snake")[0]);
     protagonist = Crafty(Crafty("Protagonist")[0]);
     protagonist.immortality();
-    protagonist.destroy();
     snake.startSpin(-.6);
     color_shift(255, 255, 255);
     title_text = Crafty(Crafty("Title")[0]);
