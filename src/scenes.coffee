@@ -13,7 +13,7 @@ Crafty.scene "loading", () ->
 	loading_text.css "text-align": "center", "color": "#000"
 	
 	Crafty.load ["img/person.png", "img/noise.png","img/spike.png", "audio/SnakeSong.ogg"], () ->
-		Crafty.audio.play "music", 200
+		Crafty.audio.play "music"
 		Crafty.scene("Setup")
 
 
@@ -53,7 +53,7 @@ Crafty.scene "Setup", () ->
 		# make man mortal
 		protagonist.mortality()
 		# go to scene 1
-		Crafty.scene "Scene 1"
+		Crafty.scene "Scene 2"
 
 	protagonist.bind "Moved", MovedHandler
 
@@ -68,10 +68,25 @@ Crafty.scene "Scene 1", () ->
 		generate_spike snake, i
 	
 	snake.bind "CompleteRotation", () ->
-		Crafty.scene "Scene 2"
-
+		Crafty.scene "Scene 1"
 
 Crafty.scene "Scene 2", () ->
+	snake = Crafty(Crafty("Snake")[0])
+	protagonist = Crafty(Crafty("Protagonist")[0])
+	color_shift(140, 70, 50)
+	snake.startSpin -.25
+	
+	for i in [900, 950, 1000, 1050, 1100, 1800, 1850, 1900, 1950, 2000, 2050, 2100, 2150, 4700, 5100, 5500]
+		generate_spike snake, i
+	
+	generate_platform snake, 2000, {w: 100, h: 5}, 50
+	generate_platform snake, 2300, {w: 100, h: 5}, 80
+
+	snake.bind "CompleteRotation", () ->
+		Crafty.scene "Scene 3"
+
+
+Crafty.scene "Scene 3", () ->
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
 	color_shift(140, 70, 50)
@@ -81,4 +96,4 @@ Crafty.scene "Scene 2", () ->
 		generate_spike snake, i
 	
 	snake.bind "CompleteRotation", () ->
-		Crafty.scene "Scene 3"
+		Crafty.scene "Scene 4"

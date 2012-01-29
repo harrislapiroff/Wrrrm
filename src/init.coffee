@@ -1,4 +1,5 @@
 @GAME_TITLE = "WRRRM"
+@FANCY = true
 
 @WORLD_RADIUS = 1000
 @WORLD_CIRCUMFERENCE = WORLD_RADIUS * 3.145
@@ -8,6 +9,8 @@ VIEW_WIDTH = Crafty.DOM.window.width
 VIEW_HEIGHT = Crafty.DOM.window.height
 
 main = () ->
+	if FANCY
+		document.getElementById("overlayer").setAttribute("class", "fancy")
 	Crafty.init VIEW_WIDTH, VIEW_HEIGHT
 	Crafty.canvas.init()
 	Crafty.scene "loading"

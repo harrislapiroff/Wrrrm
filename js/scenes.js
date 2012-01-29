@@ -32,7 +32,7 @@
       "color": "#000"
     });
     return Crafty.load(["img/person.png", "img/noise.png", "img/spike.png", "audio/SnakeSong.ogg"], function() {
-      Crafty.audio.play("music", 200);
+      Crafty.audio.play("music");
       return Crafty.scene("Setup");
     });
   });
@@ -75,7 +75,7 @@
         alpha: 0
       }, 100);
       protagonist.mortality();
-      return Crafty.scene("Scene 1");
+      return Crafty.scene("Scene 2");
     };
     return protagonist.bind("Moved", MovedHandler);
   });
@@ -91,10 +91,33 @@
       generate_spike(snake, i);
     }
     return snake.bind("CompleteRotation", function() {
-      return Crafty.scene("Scene 2");
+      return Crafty.scene("Scene 1");
     });
   });
   Crafty.scene("Scene 2", function() {
+    var i, protagonist, snake, _i, _len, _ref;
+    snake = Crafty(Crafty("Snake")[0]);
+    protagonist = Crafty(Crafty("Protagonist")[0]);
+    color_shift(140, 70, 50);
+    snake.startSpin(-.25);
+    _ref = [900, 950, 1000, 1050, 1100, 1800, 1850, 1900, 1950, 2000, 2050, 2100, 2150, 4700, 5100, 5500];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      i = _ref[_i];
+      generate_spike(snake, i);
+    }
+    generate_platform(snake, 2000, {
+      w: 100,
+      h: 5
+    }, 50);
+    generate_platform(snake, 2300, {
+      w: 100,
+      h: 5
+    }, 80);
+    return snake.bind("CompleteRotation", function() {
+      return Crafty.scene("Scene 3");
+    });
+  });
+  Crafty.scene("Scene 3", function() {
     var i, protagonist, snake, _i, _len, _ref;
     snake = Crafty(Crafty("Snake")[0]);
     protagonist = Crafty(Crafty("Protagonist")[0]);
@@ -106,7 +129,7 @@
       generate_spike(snake, i);
     }
     return snake.bind("CompleteRotation", function() {
-      return Crafty.scene("Scene 3");
+      return Crafty.scene("Scene 4");
     });
   });
 }).call(this);

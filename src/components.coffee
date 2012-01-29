@@ -228,8 +228,9 @@ Crafty.c "PlanetGravity",
 				collision = @hit(@_collision_selector)[0]
 				collision_entity = collision.obj
 				collision_normal = collision.normal
-				if @getAltitude() > collision_entity.getAltitude() - 3
+				if @getAltitude() > collision_entity.getAltitude() - 10
 					@_falling = false
+					@_fall_speed = @_initial_fall_speed
 			
 			if @_falling == true
 				@_fall_speed = @_fall_speed * @_accelleration

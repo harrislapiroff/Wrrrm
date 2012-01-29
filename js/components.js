@@ -253,8 +253,9 @@
           collision = this.hit(this._collision_selector)[0];
           collision_entity = collision.obj;
           collision_normal = collision.normal;
-          if (this.getAltitude() > collision_entity.getAltitude() - 3) {
+          if (this.getAltitude() > collision_entity.getAltitude() - 10) {
             this._falling = false;
+            this._fall_speed = this._initial_fall_speed;
           }
         }
         if (this._falling === true) {
