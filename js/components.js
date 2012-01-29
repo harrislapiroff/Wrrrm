@@ -60,10 +60,7 @@
         if (this._rotating) {
           this.rotate();
         }
-        this._theta = this._theta % 360;
-        return this.attr({
-          rotation: this._theta
-        });
+        return this._theta = this._theta % 360;
       });
     },
     rotate: function() {

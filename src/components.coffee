@@ -53,7 +53,8 @@ Crafty.c "Planet",
 			@_theta = @_theta % 360
 			
 			# update the DOM attributes to reflect the changes this frame
-			@attr {rotation: @_theta}
+			# although, actually, the snake doesn't need to rotate
+			# @attr {rotation: @_theta}
 	
 	rotate: () ->
 		old_theta = @_theta
