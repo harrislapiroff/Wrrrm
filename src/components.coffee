@@ -95,6 +95,10 @@ Crafty.c "PlanetWalker",
 	
 	init: () ->
 		@requires "2D, DOM, Tween"
+		
+		# this variable is a little hacky to help us keep placing the collision polygon properly-ish
+		unless @initial_polygon_point
+			@initial_polygon_point = [0, 0]
 	
 	planetwalker: (@planet, surface_location=false, altitude=false) ->
 		
@@ -131,7 +135,7 @@ Crafty.c "PlanetWalker",
 				x = (@planet.radius + altitude) * Math.cos((90-@_theta)*Math.PI/180) + Crafty.viewport.width/2 - @pos()._w/2
 				y = Crafty.viewport.height/2 - (@planet.radius + altitude) * Math.sin((90-@_theta)*Math.PI/180) + @planet.radius - @pos()._h/2
 				# shift the map back to 0, 0
-				@map.shift -@map.points[0].x, -@map.points[0].y
+				@map.shift @initial_polygon_point[0][0]-@map.points[0][0], @initial_polygon_point[0][1]-@map.points[0][1]
 				# shift the map to the newly calculated rectangular coords
 				@map.shift x, y
 	

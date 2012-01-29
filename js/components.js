@@ -98,7 +98,10 @@
     _theta: 0,
     _altitude: 0,
     init: function() {
-      return this.requires("2D, DOM, Tween");
+      this.requires("2D, DOM, Tween");
+      if (!this.initial_polygon_point) {
+        return this.initial_polygon_point = [0, 0];
+      }
     },
     planetwalker: function(planet, surface_location, altitude) {
       this.planet = planet;
@@ -134,7 +137,7 @@
         if (this.map) {
           x = (this.planet.radius + altitude) * Math.cos((90 - this._theta) * Math.PI / 180) + Crafty.viewport.width / 2 - this.pos()._w / 2;
           y = Crafty.viewport.height / 2 - (this.planet.radius + altitude) * Math.sin((90 - this._theta) * Math.PI / 180) + this.planet.radius - this.pos()._h / 2;
-          this.map.shift(-this.map.points[0].x, -this.map.points[0].y);
+          this.map.shift(this.initial_polygon_point[0][0] - this.map.points[0][0], this.initial_polygon_point[0][1] - this.map.points[0][1]);
           return this.map.shift(x, y);
         }
       });
