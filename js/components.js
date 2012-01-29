@@ -8,12 +8,10 @@
       return this.onHit("Deadly", this.die);
     },
     mortality: function() {
-      this._mortality = true;
-      return console.log(this._mortality);
+      return this._mortality = true;
     },
     immortality: function() {
-      this._mortality = false;
-      return console.log(this._mortality);
+      return this._mortality = false;
     },
     die: function() {
       if (this._mortality) {
@@ -72,7 +70,10 @@
       var old_theta;
       old_theta = this._theta;
       this._theta = this._theta + this._rotation_speed;
-      return this.trigger("Rotated", this._theta - old_theta);
+      this.trigger("Rotated", this._theta - old_theta);
+      if ((this._theta >= 360) || (this._theta <= -360)) {
+        return this.trigger("CompleteRotation");
+      }
     },
     rotateTo: function(theta) {
       var old_theta;

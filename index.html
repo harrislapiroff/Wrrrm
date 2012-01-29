@@ -2,30 +2,27 @@
 
 <html>
 	<head>
-		<title>Ouroboros</title>
+		<title>Wrrrm</title>
 		<link href='http://fonts.googleapis.com/css?family=Medula+One' rel='stylesheet' type='text/css'>
 		<style type="text/css">
 			body{
 				margin:0;
 				padding:0;
-				background:-webkit-gradient(radial, 50% 100% , 0, 50% 100%, 800, from(#FDFFD6), color-stop(.7,#807E57), to(#6E6C57));
+				background:#CCC;
 			}
-			body::before{
-				box-shadow:0 0 360px 0 #000 inset, 0 0 0 10px rgba(0,0,0,.35) inset;
+			#overlayer{
+				box-shadow:0 0 180px 60px #222 inset, 0 0 0 10px rgba(0,0,0,.15) inset;
 				opacity:1;
-				background:rgba(253, 255, 214, .3);
-			}
-			body::after{
-				background:transparent url("img/noise.png") 0 0;
-			}
-			body::before, body::after{
-				z-index:1337;
-				content:" ";
+				background:rgba(253, 255, 214, .3) url("img/noise.png");
+				z-index:9999;
 				position:absolute;
 				top:0;
 				left:0;
 				right:0;
 				bottom:0;
+				-webkit-transition: all 10s linear;
+				-moz-transition: all 10s linear;
+				transition: all 10s linear;
 			}
 		</style>
 		<script src="crafty.js" type="text/javascript" charset="utf-8"></script>
@@ -37,6 +34,6 @@
 		<script src="js/init.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
-		
+		<div id="overlayer"></div>
 	</body>
 </html>

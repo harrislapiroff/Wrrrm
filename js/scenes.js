@@ -1,9 +1,10 @@
 (function() {
-  var TESTING;
-  TESTING = false;
+  var PLAYER_ORIGIN, SNAKEHEAD_ORIGIN;
+  SNAKEHEAD_ORIGIN = 500;
+  PLAYER_ORIGIN = -100;
   Crafty.scene("loading", function() {
     var loading_text, title_text;
-    title_text = Crafty.e("2D, DOM, Text, Persist");
+    title_text = Crafty.e("2D, DOM, Text, Tween, Persist, Title");
     title_text.attr({
       w: Crafty.viewport.width,
       h: 128,
@@ -35,10 +36,11 @@
     });
   });
   Crafty.scene("Setup", function() {
-    var KeyDownHandler, death_floor, platform, platform_2, protagonist, snake, snakehead;
+    var KeyDownHandler, death_floor, platform, platform_2, protagonist, snake, snakehead, title_text;
+    title_text = Crafty(Crafty("Title")[0]);
     snake = generate_snake(WORLD_RADIUS);
     protagonist = generate_protagonist(snake);
-    snakehead = generate_snakehead(snake, 125);
+    snakehead = generate_snakehead(snake, SNAKEHEAD_ORIGIN);
     death_floor = generate_death({
       x: -1000,
       y: Crafty.viewport.height + 30,
@@ -57,30 +59,50 @@
     protagonist.addComponent("Persist");
     snakehead.addComponent("Persist");
     death_floor.addComponent("Persist");
-    protagonist.setSurfaceLocation(-100);
+    protagonist.setSurfaceLocation(PLAYER_ORIGIN);
     protagonist.bind("Died", function() {
       protagonist.immortality();
+      snake.stopSpin();
       snake.rotateTo(0);
       protagonist.mortality();
-      protagonist.setSurfaceLocation(-100);
+      protagonist.setSurfaceLocation(PLAYER_ORIGIN);
       return Crafty.scene(Crafty._current);
     });
     KeyDownHandler = function() {
       Crafty.unbind("KeyDown", KeyDownHandler);
-      snake.startSpin(-.25);
+      title_text.tween({
+        alpha: 0
+      }, 100);
       protagonist.mortality();
       return Crafty.scene("Scene 1");
     };
     return Crafty.bind("KeyDown", KeyDownHandler);
   });
   Crafty.scene("Scene 1", function() {
-    var i, protagonist, snake, _results;
+    var i, protagonist, snake, _i, _len, _ref;
     snake = Crafty(Crafty("Snake")[0]);
     protagonist = Crafty(Crafty("Protagonist")[0]);
-    i = 100;
+    color_shift(60, 70, 50);
+    snake.startSpin(-.35);
+    _ref = [900, 1300, 1700, 2100, 2150, 2200, 2600, 3000, 3400, 3800, 3850, 3900, 4300, 4700, 5100, 5500];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      i = _ref[_i];
+      generate_spike(snake, i);
+    }
+    return snake.bind("CompleteRotation", function() {
+      return Crafty.scene("Scene 2");
+    });
+  });
+  Crafty.scene("Scene 2", function() {
+    var i, protagonist, snake, _i, _len, _ref, _results;
+    snake = Crafty(Crafty("Snake")[0]);
+    protagonist = Crafty(Crafty("Protagonist")[0]);
+    color_shift(140, 70, 50);
+    snake.startSpin(-.5);
+    _ref = [900, 1300, 1700, 2100, 2150, 2200, 2600, 3000, 3400, 3800, 3850, 3900, 4300, 4700, 5100, 5500];
     _results = [];
-    while ((i + 900) < WORLD_CIRCUMFERENCE) {
-      i = Crafty.math.randomInt(i + 300, i + 900);
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      i = _ref[_i];
       _results.push(generate_spike(snake, i));
     }
     return _results;

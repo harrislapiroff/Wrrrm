@@ -1,6 +1,6 @@
 (function() {
   var VIEW_HEIGHT, VIEW_WIDTH, main;
-  this.GAME_TITLE = "[Game Title]";
+  this.GAME_TITLE = "WRRRM";
   this.WORLD_RADIUS = 1000;
   this.WORLD_CIRCUMFERENCE = WORLD_RADIUS * 3.145;
   VIEW_WIDTH = Crafty.DOM.window.width;

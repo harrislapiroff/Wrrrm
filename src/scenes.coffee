@@ -1,7 +1,8 @@
-TESTING = false
+SNAKEHEAD_ORIGIN = 500
+PLAYER_ORIGIN = -100
 
 Crafty.scene "loading", () ->
-	title_text = Crafty.e "2D, DOM, Text, Persist"
+	title_text = Crafty.e "2D, DOM, Text, Tween, Persist, Title"
 	title_text.attr w: Crafty.viewport.width, h: 128, x: 0, y: 40
 	title_text.text GAME_TITLE
 	title_text.css "text-align": "center", "color": "#000", "font-family": "Medula One", "font-size": 128, "text-transform": "uppercase"
@@ -14,10 +15,12 @@ Crafty.scene "loading", () ->
 	Crafty.load ["img/person.png", "img/noise.png","img/spike.png"], () ->
 		Crafty.scene("Setup")
 
+
 Crafty.scene "Setup", () ->
+	title_text = Crafty(Crafty("Title")[0])
 	snake = generate_snake WORLD_RADIUS
 	protagonist = generate_protagonist snake
-	snakehead = generate_snakehead snake, 125
+	snakehead = generate_snakehead snake, SNAKEHEAD_ORIGIN
 	death_floor = generate_death x: -1000, y: Crafty.viewport.height + 30, w: Crafty.viewport.width + 2000, h: 1
 	platform = generate_platform snake, 800, {w: 100, h: 3}, 80
 	platform_2 = generate_platform snake, 900, {w: 100, h: 3}, 120
@@ -25,25 +28,27 @@ Crafty.scene "Setup", () ->
 	protagonist.addComponent "Persist"
 	snakehead.addComponent "Persist"
 	death_floor.addComponent "Persist"
-	protagonist.setSurfaceLocation -100
+	protagonist.setSurfaceLocation PLAYER_ORIGIN
 	
 	protagonist.bind "Died", () ->
 		# temporary immortality, just in case
 		protagonist.immortality()
+		# stop the world spinning
+		snake.stopSpin()
 		# rotate world back to start
 		snake.rotateTo 0
 		# Make man mortal.
 		protagonist.mortality()
 		# Move protagonist back to origin
-		protagonist.setSurfaceLocation -100
+		protagonist.setSurfaceLocation PLAYER_ORIGIN
 		# restart current scene (calling a private attribute? Bad bad!)
 		Crafty.scene Crafty._current
 	
 	KeyDownHandler = () ->
 		# unbind the keypress
 		Crafty.unbind "KeyDown", KeyDownHandler
-		# triggers the world to start spinning
-		snake.startSpin -.25
+		# fade out title text
+		title_text.tween {alpha: 0}, 100
 		# make man mortal
 		protagonist.mortality()
 		# go to scene 1
@@ -51,11 +56,25 @@ Crafty.scene "Setup", () ->
 
 	Crafty.bind "KeyDown", KeyDownHandler
 
+
 Crafty.scene "Scene 1", () ->
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
+	color_shift(60, 70, 50)
+	snake.startSpin -.35
 	
-	i = 100
-	while (i + 900) < WORLD_CIRCUMFERENCE
-		i = Crafty.math.randomInt i+300, i + 900
+	for i in [900, 1300, 1700, 2100, 2150, 2200, 2600, 3000, 3400, 3800, 3850, 3900, 4300, 4700, 5100, 5500]
+		generate_spike snake, i
+	
+	snake.bind "CompleteRotation", () ->
+		Crafty.scene "Scene 2"
+
+
+Crafty.scene "Scene 2", () ->
+	snake = Crafty(Crafty("Snake")[0])
+	protagonist = Crafty(Crafty("Protagonist")[0])
+	color_shift(140, 70, 50)
+	snake.startSpin -.5
+	
+	for i in [900, 1300, 1700, 2100, 2150, 2200, 2600, 3000, 3400, 3800, 3850, 3900, 4300, 4700, 5100, 5500]
 		generate_spike snake, i

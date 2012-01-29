@@ -7,11 +7,9 @@ Crafty.c "Protagonist",
 		
 	mortality: () ->
 		@_mortality = true
-		console.log @_mortality
 		
 	immortality: () ->
 		@_mortality = false
-		console.log @_mortality
 		
 	die: () ->
 		if @_mortality
@@ -63,6 +61,10 @@ Crafty.c "Planet",
 		
 		# trigger the Rotated event and pass the tdelta
 		@trigger "Rotated",  @_theta - old_theta
+		
+		# trigger complete rotation if we go from near 360 to near 0
+		if (@_theta >= 360) or (@_theta <= -360)
+			@trigger "CompleteRotation"
 	
 	rotateTo: (theta) ->
 		old_theta = @_theta
