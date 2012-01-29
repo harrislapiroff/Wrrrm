@@ -27,6 +27,7 @@ main = () ->
 	Crafty.audio.play "music"
 	audio_element = Crafty.audio._elems["music"][0]
 	audio_element.addEventListener "ended", audio_end
+	audio_playing = true
 
 	Crafty.init VIEW_WIDTH, VIEW_HEIGHT
 	Crafty.canvas.init()

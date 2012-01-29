@@ -16,14 +16,34 @@
 	# now the snake
 	ent = Crafty.e "2D, DOM, Tween, PlanetWalker, snakehead"
 	ent.planetwalker snake, loc, -55
+
 @generate_protagonist = (snake) ->
-	ent = Crafty.e "2D, DOM, Collision, person, TwowayPlanetWalker, PlanetGravity, Protagonist"
+	ent = Crafty.e "2D, DOM, Collision, person, TwowayPlanetWalker, PlanetGravity, Protagonist, SpriteAnimation"
 	ent.attr {x: (Crafty.viewport.width - 32) / 2, y: 20, w: 32, h: 32}
 	ent.protagonist()
 	ent.planetwalker snake
 	ent.twowayOnPlanet snake, 10, 10
 	ent.planetGravity "Platform"
 	ent.collision()
+	ent.animate("standingl", 0, 0, 0)
+	ent.animate("standingr", 1, 0, 1)
+	ent.animate("walkingr", 2, 0, 3)
+	ent.animate("walkingl", 4, 0, 5)
+	ent.animate("jumpl", 6, 0, 6)
+	ent.animate("jumpr", 7, 0, 7)
+	
+	ent.bind "NewDirection", (direction) ->
+		if direction == "left"
+			@animate "walkingl", 1, -1
+		if direction == "right"
+			@animate "walkingr", 1, -1
+		if direction == "upleft"
+			@animate "jumpl", 1, -1
+		if direction == "upright"
+			@animate "jumpr", 1, -1
+		if direction == "none"
+			@animate "standingl", 1, -1
+	
 	ent.onHit () ->
 		console.log "hit something"
 	
