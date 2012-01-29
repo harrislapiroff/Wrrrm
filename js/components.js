@@ -120,6 +120,7 @@
         if (this.map) {
           x = (this.planet.radius + altitude) * Math.cos((90 - this._theta) * Math.PI / 180) + Crafty.viewport.width / 2 - this.pos()._w / 2;
           y = Crafty.viewport.height / 2 - (this.planet.radius + altitude) * Math.sin((90 - this._theta) * Math.PI / 180) + this.planet.radius - this.pos()._h / 2;
+          console.log(-this.map.points[0].x, -this.map.points[0].y);
           this.map.shift(-this.map.points[0].x, -this.map.points[0].y);
           return this.map.shift(x, y);
         }
@@ -234,6 +235,26 @@
     },
     isFalling: function() {
       return this._falling;
+    }
+  });
+  Crafty.c("VisibleCollisionPolygon", {
+    init: function() {
+      this.ctx = Crafty.canvas.context;
+      return this.bind("EnterFrame", function() {
+        return this.makePoly();
+      });
+    },
+    makePoly: function() {
+      var point, _i, _len, _ref;
+      if (this.map) {
+        this.ctx.beginPath();
+        _ref = this.map.points;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          point = _ref[_i];
+          this.ctx.moveTo(point[0], point[1]);
+        }
+        return this.ctx.stroke();
+      }
     }
   });
 }).call(this);

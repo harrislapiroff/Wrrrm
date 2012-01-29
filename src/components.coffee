@@ -112,22 +112,10 @@ Crafty.c "PlanetWalker",
 				x = (@planet.radius + altitude) * Math.cos((90-@_theta)*Math.PI/180) + Crafty.viewport.width/2 - @pos()._w/2
 				y = Crafty.viewport.height/2 - (@planet.radius + altitude) * Math.sin((90-@_theta)*Math.PI/180) + @planet.radius - @pos()._h/2
 				# shift the map back to 0, 0
+				console.log(-@map.points[0].x, -@map.points[0].y)
 				@map.shift -@map.points[0].x, -@map.points[0].y
 				# shift the map to the newly calculated rectangular coords
 				@map.shift x, y
-				
-				# This code is for debugging. Uncommenting it will show a small red pixel at the new location of each entity's hit map.
-				# setPixel = (imageData, x, y, r, g, b, a) ->
-				# 	index = (x + y * imageData.width) * 4;
-				# 	imageData.data[index+0] = r;
-				# 	imageData.data[index+1] = g;
-				# 	imageData.data[index+2] = b;
-				# 	imageData.data[index+3] = a;
-				# 
-				# ctx = Crafty.canvas.context
-				# imageData = ctx.createImageData(1,1)
-				# setPixel(imageData, 0, 0, 255, 0, 0, 0xff)
-				# ctx.putImageData(imageData, x, y)
 	
 	attachToPlanet: () ->
 		@_attached_to_planet = true
@@ -222,3 +210,15 @@ Crafty.c "PlanetGravity",
 	
 	isFalling: () ->
 		return @_falling
+
+Crafty.c "VisibleCollisionPolygon",
+	init: () ->
+		@ctx = Crafty.canvas.context
+		@bind "EnterFrame", () -> @makePoly()
+	
+	makePoly: () ->
+		if @map
+			@ctx.beginPath()
+			for point in @map.points
+				@ctx.moveTo(point[0], point[1])
+			@ctx.stroke()
