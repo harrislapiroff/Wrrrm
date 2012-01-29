@@ -32,10 +32,16 @@
       "color": "#000"
     });
     return Crafty.load(["img/person.png", "img/noise.png", "img/spike.png"], function() {
+      var audio_element, audio_end;
+      audio_end = function() {
+        var aud;
+        aud = this.cloneNode();
+        aud.play();
+        return aud.addEventListener("ended", audio_end);
+      };
       Crafty.audio.play("music");
-      Crafty.audio.settings("music", {
-        loop: true
-      });
+      audio_element = Crafty.audio._elems["music"][0];
+      audio_element.addEventListener("ended", audio_end);
       return Crafty.scene("Setup");
     });
   });
@@ -136,11 +142,33 @@
     });
   });
   Crafty.scene("Scene 4", function() {
+    var protagonist, snake;
+    snake = Crafty(Crafty("Snake")[0]);
+    protagonist = Crafty(Crafty("Protagonist")[0]);
+    color_shift(0, 80, 20);
+    snake.startSpin(-.62);
+    return snake.bind("CompleteRotation", function() {
+      return Crafty.scene("Scene 5");
+    });
+  });
+  Crafty.scene("Scene 5", function() {
     var i, protagonist, snake, _i, _len, _ref;
     snake = Crafty(Crafty("Snake")[0]);
     protagonist = Crafty(Crafty("Protagonist")[0]);
     color_shift(25, 90, 60);
-    snake.startSpin(-.6);
+    snake.startSpin(-.1);
+    snake.delay((function() {
+      return this.startSpin(-.2);
+    }), 200);
+    snake.delay((function() {
+      return this.startSpin(-.3);
+    }), 400);
+    snake.delay((function() {
+      return this.startSpin(-.45);
+    }), 600);
+    snake.delay((function() {
+      return this.startSpin(-.6);
+    }), 1000);
     _ref = [825, 850, 900, 1500, 1600, 2200, 2250, 2300, 2600, 3800, 3850, 3900, 4300, 4700, 5100, 5500];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       i = _ref[_i];

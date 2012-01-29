@@ -13,8 +13,18 @@ Crafty.scene "loading", () ->
 	loading_text.css "text-align": "center", "color": "#000"
 	
 	Crafty.load ["img/person.png", "img/noise.png","img/spike.png"], () ->
+		
+		# Crafty's audio looping doesn't seem to work, so hijack the element to loop it outselves.
+		audio_end = () ->
+			aud = @cloneNode()
+			aud.play()
+			aud.addEventListener "ended", audio_end
+		
 		Crafty.audio.play "music"
-		Crafty.audio.settings "music", {loop: true}
+		audio_element = Crafty.audio._elems["music"][0]
+		audio_element.addEventListener "ended", audio_end
+		
+		# start the game!
 		Crafty.scene("Setup")
 
 
@@ -104,13 +114,28 @@ Crafty.scene "Scene 3", () ->
 		Crafty.scene "Scene 4"
 
 Crafty.scene "Scene 4", () ->
-		snake = Crafty(Crafty("Snake")[0])
-		protagonist = Crafty(Crafty("Protagonist")[0])
-		color_shift(25, 90, 60)
-		snake.startSpin -.6
+	# A straight up fast level with no enemies. Just don't fall off the back.
+	snake = Crafty(Crafty("Snake")[0])
+	protagonist = Crafty(Crafty("Protagonist")[0])
+	color_shift(0, 80, 20)
+	snake.startSpin -.62
 
-		for i in [825, 850, 900, 1500, 1600, 2200, 2250, 2300, 2600, 3800, 3850, 3900, 4300, 4700, 5100, 5500]
-			generate_spike snake, i
+	snake.bind "CompleteRotation", () ->
+		Crafty.scene "Scene 5"
+		
+Crafty.scene "Scene 5", () ->
+	# Still slightly faster than you can run, but with spikes.
+	snake = Crafty(Crafty("Snake")[0])
+	protagonist = Crafty(Crafty("Protagonist")[0])
+	color_shift(25, 90, 60)
+	snake.startSpin -.1
+	snake.delay (() -> @startSpin -.2), 200
+	snake.delay (() -> @startSpin -.3), 400
+	snake.delay (() -> @startSpin -.45), 600
+	snake.delay (() -> @startSpin -.6), 1000
 
-		snake.bind "CompleteRotation", () ->
-			Crafty.scene "Scene 5"
+	for i in [825, 850, 900, 1500, 1600, 2200, 2250, 2300, 2600, 3800, 3850, 3900, 4300, 4700, 5100, 5500]
+		generate_spike snake, i
+
+	snake.bind "CompleteRotation", () ->
+		Crafty.scene "Scene 5"
