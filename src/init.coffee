@@ -1,9 +1,11 @@
 # Concept and Code Harris Lapiroff
 # Music Jarryd Huntley
 
-
 @GAME_TITLE = "WRRRM"
-@FANCY = false
+if get_query_variable('fancy') == "true"
+	@FANCY = true
+else
+	@FANCY = false
 
 @WORLD_RADIUS = 1000
 @WORLD_CIRCUMFERENCE = WORLD_RADIUS * 3.145
@@ -14,7 +16,7 @@ VIEW_HEIGHT = Crafty.DOM.window.height
 
 main = () ->
 	if FANCY
-		document.getElementById("overlayer").setAttribute("class", "fancy")
+		document.body.setAttribute("class", "fancy")
 	Crafty.init VIEW_WIDTH, VIEW_HEIGHT
 	Crafty.canvas.init()
 	Crafty.scene "loading"
