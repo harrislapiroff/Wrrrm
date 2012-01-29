@@ -171,7 +171,7 @@
       generate_spike(snake, i);
     }
     return snake.bind("CompleteRotation", function() {
-      return Crafty.scene("Scene 4");
+      return Crafty.scene("Scene 5");
     });
   });
   Crafty.scene("Scene 5", function() {

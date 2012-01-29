@@ -137,7 +137,7 @@ Crafty.scene "Scene 4", () ->
 		generate_spike snake, i
 	
 	snake.bind "CompleteRotation", () ->
-		Crafty.scene "Scene 4"
+		Crafty.scene "Scene 5"
 
 Crafty.scene "Scene 5", () ->
 	# A straight up fast level with no enemies. Just don't fall off the back.
