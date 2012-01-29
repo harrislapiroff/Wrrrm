@@ -31,7 +31,8 @@
       "text-align": "center",
       "color": "#000"
     });
-    return Crafty.load(["img/person.png", "img/noise.png", "img/spike.png"], function() {
+    return Crafty.load(["img/person.png", "img/noise.png", "img/spike.png", "audio/SnakeSong.ogg"], function() {
+      Crafty.audio.play("music", 200);
       return Crafty.scene("Setup");
     });
   });
@@ -79,15 +80,11 @@
     return protagonist.bind("Moved", MovedHandler);
   });
   Crafty.scene("Scene 1", function() {
-    var box, i, protagonist, snake, _i, _len, _ref;
+    var i, protagonist, snake, _i, _len, _ref;
     snake = Crafty(Crafty("Snake")[0]);
     protagonist = Crafty(Crafty("Protagonist")[0]);
     color_shift(60, 70, 50);
     snake.startSpin(-.35);
-    box = generate_box(snake, 1000, {
-      w: 100,
-      h: 20
-    });
     _ref = [900, 1300, 1700, 2100, 2150, 2200, 2600, 3000, 3400, 3800, 3850, 3900, 4300, 4700, 5100, 5500];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       i = _ref[_i];

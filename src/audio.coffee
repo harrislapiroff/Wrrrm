@@ -1,0 +1,1 @@
+Crafty.audio.add "music", "audio/SnakeSong.ogg"
