@@ -73,12 +73,18 @@
       return Crafty.scene(Crafty._current);
     });
     MovedHandler = function() {
+      var level;
       protagonist.unbind("Moved", MovedHandler);
       title_text.tween({
         alpha: 0
       }, 100);
       protagonist.mortality();
-      return Crafty.scene("Scene 1");
+      level = get_query_variable("level");
+      if (level) {
+        return Crafty.scene("Scene " + level);
+      } else {
+        return Crafty.scene("Scene 1");
+      }
     };
     return protagonist.bind("Moved", MovedHandler);
   });

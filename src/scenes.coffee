@@ -54,7 +54,11 @@ Crafty.scene "Setup", () ->
 		# make man mortal
 		protagonist.mortality()
 		# go to scene 1
-		Crafty.scene "Scene 1"
+		level = get_query_variable("level")
+		if level
+			Crafty.scene "Scene #{level}"
+		else
+			Crafty.scene "Scene 1"
 
 	protagonist.bind "Moved", MovedHandler
 
