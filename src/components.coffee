@@ -169,10 +169,15 @@ Crafty.c "TwowayPlanetWalker",
 		@bind "KeyDown", (e) ->
 			if e.key == Crafty.keys.LEFT_ARROW
 				@_moveL = true
+				move = true
 			if e.key == Crafty.keys.RIGHT_ARROW
 				@_moveR = true
+				move = true
 			if e.key == Crafty.keys.UP_ARROW and not @isFalling()
 				@_jump = true
+				move = true
+			if move
+				@trigger "NewDirection"
 				
 		@bind "KeyUp", (e) ->
 			if e.key == Crafty.keys.LEFT_ARROW
@@ -185,10 +190,15 @@ Crafty.c "TwowayPlanetWalker",
 		@bind "EnterFrame", () ->
 			if @_moveL
 				@_moveC(-@_speed)
+				moved = true
 			if @_moveR
 				@_moveC(@_speed)
+				moved = true
 			if @_jump
 				@_moveA(@_upspeed)
+				moved = true
+			if moved
+				@trigger "Moved"
 	
 	_moveA: (px) ->
 		@setAltitude @getAltitude() + px

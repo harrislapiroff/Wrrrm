@@ -177,14 +177,21 @@
       this._speed = _speed;
       this._upspeed = _upspeed;
       this.bind("KeyDown", function(e) {
+        var move;
         if (e.key === Crafty.keys.LEFT_ARROW) {
           this._moveL = true;
+          move = true;
         }
         if (e.key === Crafty.keys.RIGHT_ARROW) {
           this._moveR = true;
+          move = true;
         }
         if (e.key === Crafty.keys.UP_ARROW && !this.isFalling()) {
-          return this._jump = true;
+          this._jump = true;
+          move = true;
+        }
+        if (move) {
+          return this.trigger("NewDirection");
         }
       });
       this.bind("KeyUp", function(e) {
@@ -199,14 +206,21 @@
         }
       });
       return this.bind("EnterFrame", function() {
+        var moved;
         if (this._moveL) {
           this._moveC(-this._speed);
+          moved = true;
         }
         if (this._moveR) {
           this._moveC(this._speed);
+          moved = true;
         }
         if (this._jump) {
-          return this._moveA(this._upspeed);
+          this._moveA(this._upspeed);
+          moved = true;
+        }
+        if (moved) {
+          return this.trigger("Moved");
         }
       });
     },

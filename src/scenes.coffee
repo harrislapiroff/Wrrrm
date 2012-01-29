@@ -44,9 +44,9 @@ Crafty.scene "Setup", () ->
 		# restart current scene (calling a private attribute? Bad bad!)
 		Crafty.scene Crafty._current
 	
-	KeyDownHandler = () ->
+	MovedHandler = () ->
 		# unbind the keypress
-		Crafty.unbind "KeyDown", KeyDownHandler
+		protagonist.unbind "Moved", MovedHandler
 		# fade out title text
 		title_text.tween {alpha: 0}, 100
 		# make man mortal
@@ -54,7 +54,7 @@ Crafty.scene "Setup", () ->
 		# go to scene 1
 		Crafty.scene "Scene 1"
 
-	Crafty.bind "KeyDown", KeyDownHandler
+	protagonist.bind "Moved", MovedHandler
 
 
 Crafty.scene "Scene 1", () ->
@@ -62,6 +62,7 @@ Crafty.scene "Scene 1", () ->
 	protagonist = Crafty(Crafty("Protagonist")[0])
 	color_shift(60, 70, 50)
 	snake.startSpin -.35
+	box = generate_box snake, 1000, {w: 100, h: 20}
 	
 	for i in [900, 1300, 1700, 2100, 2150, 2200, 2600, 3000, 3400, 3800, 3850, 3900, 4300, 4700, 5100, 5500]
 		generate_spike snake, i
@@ -78,3 +79,6 @@ Crafty.scene "Scene 2", () ->
 	
 	for i in [900, 1300, 1700, 2100, 2150, 2200, 2600, 3000, 3400, 3800, 3850, 3900, 4300, 4700, 5100, 5500]
 		generate_spike snake, i
+	
+	snake.bind "CompleteRotation", () ->
+		Crafty.scene "Scene 3"

@@ -54,4 +54,16 @@
     ent.attr(attrs);
     return ent.collision();
   };
+  this.generate_box = function(snake, loc, attrs, altitude) {
+    var ent;
+    if (altitude == null) {
+      altitude = 0;
+    }
+    ent = Crafty.e("2D, DOM, Collision, Pushable, PlanetWalker, Platform");
+    ent.attr(attrs);
+    ent.css({
+      backroundColor: '#000'
+    });
+    return ent.planetwalker(snake, loc, altitude);
+  };
 }).call(this);

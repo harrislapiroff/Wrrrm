@@ -36,7 +36,7 @@
     });
   });
   Crafty.scene("Setup", function() {
-    var KeyDownHandler, death_floor, platform, platform_2, protagonist, snake, snakehead, title_text;
+    var MovedHandler, death_floor, platform, platform_2, protagonist, snake, snakehead, title_text;
     title_text = Crafty(Crafty("Title")[0]);
     snake = generate_snake(WORLD_RADIUS);
     protagonist = generate_protagonist(snake);
@@ -68,22 +68,26 @@
       protagonist.setSurfaceLocation(PLAYER_ORIGIN);
       return Crafty.scene(Crafty._current);
     });
-    KeyDownHandler = function() {
-      Crafty.unbind("KeyDown", KeyDownHandler);
+    MovedHandler = function() {
+      protagonist.unbind("Moved", MovedHandler);
       title_text.tween({
         alpha: 0
       }, 100);
       protagonist.mortality();
       return Crafty.scene("Scene 1");
     };
-    return Crafty.bind("KeyDown", KeyDownHandler);
+    return protagonist.bind("Moved", MovedHandler);
   });
   Crafty.scene("Scene 1", function() {
-    var i, protagonist, snake, _i, _len, _ref;
+    var box, i, protagonist, snake, _i, _len, _ref;
     snake = Crafty(Crafty("Snake")[0]);
     protagonist = Crafty(Crafty("Protagonist")[0]);
     color_shift(60, 70, 50);
     snake.startSpin(-.35);
+    box = generate_box(snake, 1000, {
+      w: 100,
+      h: 20
+    });
     _ref = [900, 1300, 1700, 2100, 2150, 2200, 2600, 3000, 3400, 3800, 3850, 3900, 4300, 4700, 5100, 5500];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       i = _ref[_i];
@@ -94,17 +98,18 @@
     });
   });
   Crafty.scene("Scene 2", function() {
-    var i, protagonist, snake, _i, _len, _ref, _results;
+    var i, protagonist, snake, _i, _len, _ref;
     snake = Crafty(Crafty("Snake")[0]);
     protagonist = Crafty(Crafty("Protagonist")[0]);
     color_shift(140, 70, 50);
     snake.startSpin(-.5);
     _ref = [900, 1300, 1700, 2100, 2150, 2200, 2600, 3000, 3400, 3800, 3850, 3900, 4300, 4700, 5100, 5500];
-    _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       i = _ref[_i];
-      _results.push(generate_spike(snake, i));
+      generate_spike(snake, i);
     }
-    return _results;
+    return snake.bind("CompleteRotation", function() {
+      return Crafty.scene("Scene 3");
+    });
   });
 }).call(this);

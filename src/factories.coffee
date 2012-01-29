@@ -34,3 +34,9 @@
 	ent = Crafty.e "2D, DOM, Collision, Deadly"
 	ent.attr attrs
 	ent.collision()
+
+@generate_box = (snake, loc, attrs, altitude=0) ->
+	ent = Crafty.e "2D, DOM, Collision, Pushable, PlanetWalker, Platform"
+	ent.attr attrs
+	ent.css {backroundColor: '#000'}
+	ent.planetwalker snake, loc, altitude
