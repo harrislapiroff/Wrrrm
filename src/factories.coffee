@@ -15,6 +15,7 @@
 @generate_protagonist = (snake) ->
 	ent = Crafty.e "2D, DOM, Collision, person, TwowayPlanetWalker, PlanetGravity, Protagonist"
 	ent.attr {x: (Crafty.viewport.width - 32) / 2, y: 20, w: 32, h: 32}
+	ent.protagonist()
 	ent.planetwalker snake
 	ent.twowayOnPlanet snake, 10, 10
 	ent.planetGravity "Platform"

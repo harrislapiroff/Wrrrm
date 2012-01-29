@@ -31,11 +31,11 @@
       "color": "#000"
     });
     return Crafty.load(["img/person.png", "img/noise.png", "img/spike.png"], function() {
-      return Crafty.scene("ouroboros");
+      return Crafty.scene("Setup");
     });
   });
-  Crafty.scene("ouroboros", function() {
-    var KeyDownHandler, death_floor, i, platform, platform_2, protagonist, snake, snakehead;
+  Crafty.scene("Setup", function() {
+    var KeyDownHandler, death_floor, platform, platform_2, protagonist, snake, snakehead;
     snake = generate_snake(WORLD_RADIUS);
     protagonist = generate_protagonist(snake);
     snakehead = generate_snakehead(snake, 125);
@@ -53,21 +53,34 @@
       w: 100,
       h: 3
     }, 120);
+    snake.addComponent("Persist");
+    protagonist.addComponent("Persist");
+    snakehead.addComponent("Persist");
+    death_floor.addComponent("Persist");
+    protagonist.setSurfaceLocation(-100);
+    KeyDownHandler = function() {
+      Crafty.unbind("KeyDown", KeyDownHandler);
+      snake.startSpin(-.25);
+      protagonist.mortality();
+      return Crafty.scene("Scene 1");
+    };
+    return Crafty.bind("KeyDown", KeyDownHandler);
+  });
+  Crafty.scene("Scene 1", function() {
+    var i, protagonist, snake;
+    snake = Crafty(Crafty("Snake")[0]);
+    protagonist = Crafty(Crafty("Protagonist")[0]);
     i = 100;
     while ((i + 900) < WORLD_CIRCUMFERENCE) {
       i = Crafty.math.randomInt(i + 300, i + 900);
       generate_spike(snake, i);
     }
-    KeyDownHandler = function() {
-      if (!TESTING) {
-        snake.startSpin(-.25);
-        protagonist.mortality();
-        return Crafty.unbind("KeyDown", KeyDownHandler);
-      }
-    };
-    Crafty.bind("KeyDown", KeyDownHandler);
     return protagonist.bind("Died", function() {
-      return Crafty.scene("ouroboros");
+      protagonist.immortality();
+      snake.rotateTo(0);
+      protagonist.mortality();
+      protagonist.setSurfaceLocation(-100);
+      return Crafty.scene("Scene 1");
     });
   });
 }).call(this);

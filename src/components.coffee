@@ -2,11 +2,20 @@ Crafty.c "Protagonist",
 	init: () ->
 		@requires "2D, DOM, Collision"
 	
-	mortality: () ->
+	protagonist: () ->
 		@onHit "Deadly", @die
-	
+		
+	mortality: () ->
+		@_mortality = true
+		console.log @_mortality
+		
+	immortality: () ->
+		@_mortality = false
+		console.log @_mortality
+		
 	die: () ->
-		@trigger("Died")
+		if @_mortality
+			@trigger("Died")
 
 
 Crafty.c "Snake"
@@ -52,6 +61,13 @@ Crafty.c "Planet",
 		old_theta = @_theta
 		@_theta = @_theta + @_rotation_speed
 		
+		# trigger the Rotated event and pass the tdelta
+		@trigger "Rotated",  @_theta - old_theta
+	
+	rotateTo: (theta) ->
+		old_theta = @_theta
+		@_theta = 0
+
 		# trigger the Rotated event and pass the tdelta
 		@trigger "Rotated",  @_theta - old_theta
 	
@@ -112,7 +128,6 @@ Crafty.c "PlanetWalker",
 				x = (@planet.radius + altitude) * Math.cos((90-@_theta)*Math.PI/180) + Crafty.viewport.width/2 - @pos()._w/2
 				y = Crafty.viewport.height/2 - (@planet.radius + altitude) * Math.sin((90-@_theta)*Math.PI/180) + @planet.radius - @pos()._h/2
 				# shift the map back to 0, 0
-				console.log(-@map.points[0].x, -@map.points[0].y)
 				@map.shift -@map.points[0].x, -@map.points[0].y
 				# shift the map to the newly calculated rectangular coords
 				@map.shift x, y

@@ -25,6 +25,7 @@
       w: 32,
       h: 32
     });
+    ent.protagonist();
     ent.planetwalker(snake);
     ent.twowayOnPlanet(snake, 10, 10);
     ent.planetGravity("Platform");

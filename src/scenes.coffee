@@ -12,32 +12,49 @@ Crafty.scene "loading", () ->
 	loading_text.css "text-align": "center", "color": "#000"
 	
 	Crafty.load ["img/person.png", "img/noise.png","img/spike.png"], () ->
-		Crafty.scene("ouroboros")
+		Crafty.scene("Setup")
 
-
-Crafty.scene "ouroboros", () ->
+Crafty.scene "Setup", () ->
 	snake = generate_snake WORLD_RADIUS
 	protagonist = generate_protagonist snake
 	snakehead = generate_snakehead snake, 125
 	death_floor = generate_death x: -1000, y: Crafty.viewport.height + 30, w: Crafty.viewport.width + 2000, h: 1
 	platform = generate_platform snake, 800, {w: 100, h: 3}, 80
 	platform_2 = generate_platform snake, 900, {w: 100, h: 3}, 120
+	snake.addComponent "Persist"
+	protagonist.addComponent "Persist"
+	snakehead.addComponent "Persist"
+	death_floor.addComponent "Persist"
+	protagonist.setSurfaceLocation -100
+	
+	KeyDownHandler = () ->
+		# unbind the keypress
+		Crafty.unbind "KeyDown", KeyDownHandler
+		# triggers the world to start spinning
+		snake.startSpin -.25
+		# make man mortal
+		protagonist.mortality()
+		# go to scene 1
+		Crafty.scene "Scene 1"
+
+	Crafty.bind "KeyDown", KeyDownHandler
+
+Crafty.scene "Scene 1", () ->
+	snake = Crafty(Crafty("Snake")[0])
+	protagonist = Crafty(Crafty("Protagonist")[0])
 	
 	i = 100
 	while (i + 900) < WORLD_CIRCUMFERENCE
 		i = Crafty.math.randomInt i+300, i + 900
 		generate_spike snake, i
-		
-	KeyDownHandler = () ->
-		# keypress triggers the world to start spinning
-		unless TESTING
-			snake.startSpin -.25
-			# Make man mortal.
-			protagonist.mortality()
-			# unbind the keypress
-			Crafty.unbind "KeyDown", KeyDownHandler
-	
-	Crafty.bind "KeyDown", KeyDownHandler
 	
 	protagonist.bind "Died", () ->
-		Crafty.scene "ouroboros"
+		protagonist.immortality()
+		# rotate back to start
+		snake.rotateTo 0
+		# Make man mortal.
+		protagonist.mortality()
+		# Move protagonist
+		protagonist.setSurfaceLocation -100
+		# back to scene 1
+		Crafty.scene "Scene 1"

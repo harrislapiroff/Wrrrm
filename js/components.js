@@ -4,11 +4,21 @@
     init: function() {
       return this.requires("2D, DOM, Collision");
     },
-    mortality: function() {
+    protagonist: function() {
       return this.onHit("Deadly", this.die);
     },
+    mortality: function() {
+      this._mortality = true;
+      return console.log(this._mortality);
+    },
+    immortality: function() {
+      this._mortality = false;
+      return console.log(this._mortality);
+    },
     die: function() {
-      return this.trigger("Died");
+      if (this._mortality) {
+        return this.trigger("Died");
+      }
     }
   });
   Crafty.c("Snake", {
@@ -62,6 +72,12 @@
       var old_theta;
       old_theta = this._theta;
       this._theta = this._theta + this._rotation_speed;
+      return this.trigger("Rotated", this._theta - old_theta);
+    },
+    rotateTo: function(theta) {
+      var old_theta;
+      old_theta = this._theta;
+      this._theta = 0;
       return this.trigger("Rotated", this._theta - old_theta);
     },
     startSpin: function(_rotation_speed) {
@@ -120,7 +136,6 @@
         if (this.map) {
           x = (this.planet.radius + altitude) * Math.cos((90 - this._theta) * Math.PI / 180) + Crafty.viewport.width / 2 - this.pos()._w / 2;
           y = Crafty.viewport.height / 2 - (this.planet.radius + altitude) * Math.sin((90 - this._theta) * Math.PI / 180) + this.planet.radius - this.pos()._h / 2;
-          console.log(-this.map.points[0].x, -this.map.points[0].y);
           this.map.shift(-this.map.points[0].x, -this.map.points[0].y);
           return this.map.shift(x, y);
         }
