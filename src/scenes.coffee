@@ -72,8 +72,30 @@ Crafty.scene "Setup", () ->
 	
 	protagonist.bind "Moved", MovedHandler
 
-
 Crafty.scene "Scene 1", () ->
+	snake = Crafty(Crafty("Snake")[0])
+	protagonist = Crafty(Crafty("Protagonist")[0])
+	color_shift(0, 0, 80)
+	
+	# gradually ramp up speed
+	snake.delay (() -> @startSpin -.05), 2000
+	snake.delay (() -> @startSpin -.1), 4000
+	snake.delay (() -> @startSpin -.15), 6000
+	snake.delay (() -> @startSpin -.2), 8000
+	snake.delay (() -> @startSpin -.25), 10000
+	snake.delay (() -> @startSpin -.3), 12000
+	snake.delay (() -> @startSpin -.35), 14000
+
+	for i in [900, 1800, 2400, 2450, 2500]
+		generate_spike snake, i
+	
+	generate_platform snake, 3000, 40
+	generate_platform snake, 3500, 80
+
+	snake.bind "CompleteRotation", () ->
+		Crafty.scene "Scene 2"
+
+Crafty.scene "Scene 2", () ->
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
 	color_shift(60, 70, 50)
@@ -83,9 +105,9 @@ Crafty.scene "Scene 1", () ->
 		generate_spike snake, i
 	
 	snake.bind "CompleteRotation", () ->
-		Crafty.scene "Scene 2"
+		Crafty.scene "Scene 3"
 
-Crafty.scene "Scene 2", () ->
+Crafty.scene "Scene 3", () ->
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
 	color_shift(190, 20, 30)
@@ -98,10 +120,10 @@ Crafty.scene "Scene 2", () ->
 	generate_platform snake, 2300, {w: 100, h: 5}, 80
 
 	snake.bind "CompleteRotation", () ->
-		Crafty.scene "Scene 3"
+		Crafty.scene "Scene 4"
 
 
-Crafty.scene "Scene 3", () ->
+Crafty.scene "Scene 4", () ->
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
 	color_shift(0, 90, 30)
@@ -113,7 +135,7 @@ Crafty.scene "Scene 3", () ->
 	snake.bind "CompleteRotation", () ->
 		Crafty.scene "Scene 4"
 
-Crafty.scene "Scene 4", () ->
+Crafty.scene "Scene 5", () ->
 	# A straight up fast level with no enemies. Just don't fall off the back.
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
@@ -121,9 +143,9 @@ Crafty.scene "Scene 4", () ->
 	snake.startSpin -.62
 
 	snake.bind "CompleteRotation", () ->
-		Crafty.scene "Scene 5"
+		Crafty.scene "Scene 6"
 		
-Crafty.scene "Scene 5", () ->
+Crafty.scene "Scene 6", () ->
 	# Still slightly faster than you can run, but with spikes.
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
@@ -138,4 +160,4 @@ Crafty.scene "Scene 5", () ->
 		generate_spike snake, i
 
 	snake.bind "CompleteRotation", () ->
-		Crafty.scene "Scene 5"
+		Crafty.scene "Scene 7"
