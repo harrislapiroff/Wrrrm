@@ -12,7 +12,7 @@ Crafty.scene "loading", () ->
 	loading_text.text "Loading..."
 	loading_text.css "text-align": "center", "color": "#000"
 	
-	Crafty.load ["img/person.png", "img/noise.png","img/spike.png", "audio/SnakeSong.ogg"], () ->
+	Crafty.load ["img/person.png", "img/noise.png","img/spike.png"], () ->
 		Crafty.audio.play "music"
 		Crafty.scene("Setup")
 

@@ -1,3 +1,7 @@
+# Concept and Code Harris Lapiroff
+# Music Jarryd Huntley
+
+
 @GAME_TITLE = "WRRRM"
 @FANCY = true
 

@@ -31,7 +31,7 @@
       "text-align": "center",
       "color": "#000"
     });
-    return Crafty.load(["img/person.png", "img/noise.png", "img/spike.png", "audio/SnakeSong.ogg"], function() {
+    return Crafty.load(["img/person.png", "img/noise.png", "img/spike.png"], function() {
       Crafty.audio.play("music");
       return Crafty.scene("Setup");
     });
