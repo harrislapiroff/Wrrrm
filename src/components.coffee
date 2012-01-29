@@ -169,6 +169,19 @@ Crafty.c "TwowayPlanetWalker",
 	init: () ->
 		@requires "PlanetWalker"
 	
+	_getDirection: () ->
+		if @_moveL and not @_jump
+			direction = "left"
+		else if @_moveL and @_jump
+			direction = "upleft"
+		else if @_moveR and not @_jump
+			direction = "right"
+		else if @_moveR and @_jump
+			direction = "upright"
+		else if not (@_moveL or @_moveR or @_jump)
+			direction = "none"
+		return direction
+	
 	twowayOnPlanet: (@planet, @_speed, @_upspeed) ->
 		
 		@bind "KeyDown", (e) ->
@@ -182,7 +195,8 @@ Crafty.c "TwowayPlanetWalker",
 				@_jump = true
 				move = true
 			if move
-				@trigger "NewDirection"
+				direction = @_getDirection()
+				@trigger "NewDirection", direction
 				
 		@bind "KeyUp", (e) ->
 			if e.key == Crafty.keys.LEFT_ARROW
@@ -191,6 +205,8 @@ Crafty.c "TwowayPlanetWalker",
 				@_moveR = false
 			if e.key == Crafty.keys.UP_ARROW
 				@_jump = false
+			direction = @_getDirection()
+			@trigger "NewDirection", direction
 		
 		@bind "EnterFrame", () ->
 			if @_moveL

@@ -24,7 +24,7 @@
   };
   this.generate_protagonist = function(snake) {
     var ent;
-    ent = Crafty.e("2D, DOM, Collision, person, TwowayPlanetWalker, PlanetGravity, Protagonist");
+    ent = Crafty.e("2D, DOM, Collision, person, TwowayPlanetWalker, PlanetGravity, Protagonist, SpriteAnimation");
     ent.attr({
       x: (Crafty.viewport.width - 32) / 2,
       y: 20,
@@ -36,6 +36,29 @@
     ent.twowayOnPlanet(snake, 10, 10);
     ent.planetGravity("Platform");
     ent.collision();
+    ent.animate("standingl", 0, 0, 0);
+    ent.animate("standingr", 1, 0, 1);
+    ent.animate("walkingr", 2, 0, 3);
+    ent.animate("walkingl", 4, 0, 5);
+    ent.animate("jumpl", 6, 0, 6);
+    ent.animate("jumpr", 7, 0, 7);
+    ent.bind("NewDirection", function(direction) {
+      if (direction === "left") {
+        this.animate("walkingl", 1, -1);
+      }
+      if (direction === "right") {
+        this.animate("walkingr", 1, -1);
+      }
+      if (direction === "upleft") {
+        this.animate("jumpl", 1, -1);
+      }
+      if (direction === "upright") {
+        this.animate("jumpr", 1, -1);
+      }
+      if (direction === "none") {
+        return this.animate("standingl", 1, -1);
+      }
+    });
     return ent.onHit(function() {
       return console.log("hit something");
     });

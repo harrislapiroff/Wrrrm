@@ -172,12 +172,27 @@
     init: function() {
       return this.requires("PlanetWalker");
     },
+    _getDirection: function() {
+      var direction;
+      if (this._moveL && !this._jump) {
+        direction = "left";
+      } else if (this._moveL && this._jump) {
+        direction = "upleft";
+      } else if (this._moveR && !this._jump) {
+        direction = "right";
+      } else if (this._moveR && this._jump) {
+        direction = "upright";
+      } else if (!(this._moveL || this._moveR || this._jump)) {
+        direction = "none";
+      }
+      return direction;
+    },
     twowayOnPlanet: function(planet, _speed, _upspeed) {
       this.planet = planet;
       this._speed = _speed;
       this._upspeed = _upspeed;
       this.bind("KeyDown", function(e) {
-        var move;
+        var direction, move;
         if (e.key === Crafty.keys.LEFT_ARROW) {
           this._moveL = true;
           move = true;
@@ -191,10 +206,12 @@
           move = true;
         }
         if (move) {
-          return this.trigger("NewDirection");
+          direction = this._getDirection();
+          return this.trigger("NewDirection", direction);
         }
       });
       this.bind("KeyUp", function(e) {
+        var direction;
         if (e.key === Crafty.keys.LEFT_ARROW) {
           this._moveL = false;
         }
@@ -202,8 +219,10 @@
           this._moveR = false;
         }
         if (e.key === Crafty.keys.UP_ARROW) {
-          return this._jump = false;
+          this._jump = false;
         }
+        direction = this._getDirection();
+        return this.trigger("NewDirection", direction);
       });
       return this.bind("EnterFrame", function() {
         var moved;
