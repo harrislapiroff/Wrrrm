@@ -17,7 +17,8 @@ Crafty.scene "loading", () ->
 
 Crafty.scene "ouroboros", () ->
 	snake = generate_snake WORLD_RADIUS
-	snakehead = generate_snakehead snake, 100
+	protagonist = generate_protagonist snake
+	snakehead = generate_snakehead snake, 125
 	death_floor = generate_death x: -1000, y: Crafty.viewport.height + 30, w: Crafty.viewport.width + 2000, h: 1
 	platform = generate_platform snake, 800, {w: 100, h: 3}, 80
 	platform_2 = generate_platform snake, 900, {w: 100, h: 3}, 120
@@ -38,6 +39,5 @@ Crafty.scene "ouroboros", () ->
 	
 	Crafty.bind "KeyDown", KeyDownHandler
 	
-	protagonist = generate_protagonist snake
 	protagonist.bind "Died", () ->
 		Crafty.scene "ouroboros"

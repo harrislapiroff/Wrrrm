@@ -80,7 +80,7 @@ Crafty.c "PlanetWalker",
 	planetwalker: (@planet, surface_location=false, altitude=false) ->
 		
 		if altitude
-			@_altitude = altitude
+			@setAltitude altitude
 		
 		if surface_location
 			@setSurfaceLocation surface_location
@@ -88,9 +88,14 @@ Crafty.c "PlanetWalker",
 		# set the origin to the center of the planet
 		@attr {x: (Crafty.viewport.width - @pos()._w)/2}
 		
-		# bind the spinning to the snake spinning
-		@planet.bind "Rotated", (tdelta) => @rotateBy(tdelta)
+		@attachToPlanet()
 		
+		# bind the spinning to the snake spinning
+		@planet.bind "Rotated", (tdelta) =>
+			if @_attached_to_planet
+				@rotateBy(tdelta)
+		
+		# Rerender on frame
 		@bind "EnterFrame", () ->
 			# theta should be mod 360
 			@_theta = @_theta % 360
@@ -102,17 +107,22 @@ Crafty.c "PlanetWalker",
 			
 			@origin @pos()._w/2, @planet.radius + @_altitude + @pos()._h
 	
+	attachToPlanet: () ->
+		@_attached_to_planet = true
+	
+	detachFromPlanet: () ->
+		@_attached_to_planet = false
+	
 	rotateBy: (tdelta) ->
 		@_theta = @_theta + tdelta
+		@trigger "RotationChange"
 	
 	getAltitude: () ->
 		@_altitude
 		
 	setAltitude: (a) ->
 		@_altitude = a
-		@origin @pos()._w/2, @planet.radius + @_altitude + @pos()._h
-		if @collision
-			@collision()
+		@trigger "AltitudeChange"
 			
 	setSurfaceLocation: (surface_location) ->
 		@_theta = surface_location * 360 / @planet.circumference()
@@ -134,7 +144,7 @@ Crafty.c "TwowayPlanetWalker",
 				@_moveL = true
 			if e.key == Crafty.keys.RIGHT_ARROW
 				@_moveR = true
-			if e.key == Crafty.keys.UP_ARROW
+			if e.key == Crafty.keys.UP_ARROW and not @isFalling()
 				@_jump = true
 				
 		@bind "KeyUp", (e) ->
@@ -187,3 +197,10 @@ Crafty.c "PlanetGravity",
 			if @_falling == true
 				@_fall_speed = @_fall_speed * @_accelleration
 				@setAltitude Math.max(altitude - @_fall_speed, 0)
+	
+	isFalling: () ->
+		return @_falling
+
+Crafty.c "Platform",
+	init: () ->
+		@collision()

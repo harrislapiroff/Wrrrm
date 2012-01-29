@@ -37,7 +37,8 @@
   Crafty.scene("ouroboros", function() {
     var KeyDownHandler, death_floor, i, platform, platform_2, protagonist, snake, snakehead;
     snake = generate_snake(WORLD_RADIUS);
-    snakehead = generate_snakehead(snake, 100);
+    protagonist = generate_protagonist(snake);
+    snakehead = generate_snakehead(snake, 125);
     death_floor = generate_death({
       x: -1000,
       y: Crafty.viewport.height + 30,
@@ -65,7 +66,6 @@
       }
     };
     Crafty.bind("KeyDown", KeyDownHandler);
-    protagonist = generate_protagonist(snake);
     return protagonist.bind("Died", function() {
       return Crafty.scene("ouroboros");
     });

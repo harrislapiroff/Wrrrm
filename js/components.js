@@ -95,7 +95,7 @@
         altitude = false;
       }
       if (altitude) {
-        this._altitude = altitude;
+        this.setAltitude(altitude);
       }
       if (surface_location) {
         this.setSurfaceLocation(surface_location);
@@ -103,8 +103,11 @@
       this.attr({
         x: (Crafty.viewport.width - this.pos()._w) / 2
       });
+      this.attachToPlanet();
       this.planet.bind("Rotated", __bind(function(tdelta) {
-        return this.rotateBy(tdelta);
+        if (this._attached_to_planet) {
+          return this.rotateBy(tdelta);
+        }
       }, this));
       return this.bind("EnterFrame", function() {
         this._theta = this._theta % 360;
@@ -115,18 +118,22 @@
         return this.origin(this.pos()._w / 2, this.planet.radius + this._altitude + this.pos()._h);
       });
     },
+    attachToPlanet: function() {
+      return this._attached_to_planet = true;
+    },
+    detachFromPlanet: function() {
+      return this._attached_to_planet = false;
+    },
     rotateBy: function(tdelta) {
-      return this._theta = this._theta + tdelta;
+      this._theta = this._theta + tdelta;
+      return this.trigger("RotationChange");
     },
     getAltitude: function() {
       return this._altitude;
     },
     setAltitude: function(a) {
       this._altitude = a;
-      this.origin(this.pos()._w / 2, this.planet.radius + this._altitude + this.pos()._h);
-      if (this.collision) {
-        return this.collision();
-      }
+      return this.trigger("AltitudeChange");
     },
     setSurfaceLocation: function(surface_location) {
       return this._theta = surface_location * 360 / this.planet.circumference();
@@ -152,7 +159,7 @@
         if (e.key === Crafty.keys.RIGHT_ARROW) {
           this._moveR = true;
         }
-        if (e.key === Crafty.keys.UP_ARROW) {
+        if (e.key === Crafty.keys.UP_ARROW && !this.isFalling()) {
           return this._jump = true;
         }
       });
@@ -217,6 +224,14 @@
           return this.setAltitude(Math.max(altitude - this._fall_speed, 0));
         }
       });
+    },
+    isFalling: function() {
+      return this._falling;
+    }
+  });
+  Crafty.c("Platform", {
+    init: function() {
+      return this.collision();
     }
   });
 }).call(this);
