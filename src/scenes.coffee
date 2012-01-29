@@ -27,6 +27,18 @@ Crafty.scene "Setup", () ->
 	death_floor.addComponent "Persist"
 	protagonist.setSurfaceLocation -100
 	
+	protagonist.bind "Died", () ->
+		# temporary immortality, just in case
+		protagonist.immortality()
+		# rotate world back to start
+		snake.rotateTo 0
+		# Make man mortal.
+		protagonist.mortality()
+		# Move protagonist back to origin
+		protagonist.setSurfaceLocation -100
+		# restart current scene (calling a private attribute? Bad bad!)
+		Crafty.scene Crafty._current
+	
 	KeyDownHandler = () ->
 		# unbind the keypress
 		Crafty.unbind "KeyDown", KeyDownHandler
@@ -47,14 +59,3 @@ Crafty.scene "Scene 1", () ->
 	while (i + 900) < WORLD_CIRCUMFERENCE
 		i = Crafty.math.randomInt i+300, i + 900
 		generate_spike snake, i
-	
-	protagonist.bind "Died", () ->
-		protagonist.immortality()
-		# rotate back to start
-		snake.rotateTo 0
-		# Make man mortal.
-		protagonist.mortality()
-		# Move protagonist
-		protagonist.setSurfaceLocation -100
-		# back to scene 1
-		Crafty.scene "Scene 1"

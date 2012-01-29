@@ -58,6 +58,13 @@
     snakehead.addComponent("Persist");
     death_floor.addComponent("Persist");
     protagonist.setSurfaceLocation(-100);
+    protagonist.bind("Died", function() {
+      protagonist.immortality();
+      snake.rotateTo(0);
+      protagonist.mortality();
+      protagonist.setSurfaceLocation(-100);
+      return Crafty.scene(Crafty._current);
+    });
     KeyDownHandler = function() {
       Crafty.unbind("KeyDown", KeyDownHandler);
       snake.startSpin(-.25);
@@ -67,20 +74,15 @@
     return Crafty.bind("KeyDown", KeyDownHandler);
   });
   Crafty.scene("Scene 1", function() {
-    var i, protagonist, snake;
+    var i, protagonist, snake, _results;
     snake = Crafty(Crafty("Snake")[0]);
     protagonist = Crafty(Crafty("Protagonist")[0]);
     i = 100;
+    _results = [];
     while ((i + 900) < WORLD_CIRCUMFERENCE) {
       i = Crafty.math.randomInt(i + 300, i + 900);
-      generate_spike(snake, i);
+      _results.push(generate_spike(snake, i));
     }
-    return protagonist.bind("Died", function() {
-      protagonist.immortality();
-      snake.rotateTo(0);
-      protagonist.mortality();
-      protagonist.setSurfaceLocation(-100);
-      return Crafty.scene("Scene 1");
-    });
+    return _results;
   });
 }).call(this);
