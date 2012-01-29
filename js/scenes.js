@@ -120,7 +120,9 @@
       generate_spike(snake, i);
     }
     generate_platform(snake, 3000, 40);
-    generate_platform(snake, 3500, 80);
+    generate_platform(snake, 3250, 80);
+    generate_platform(snake, 3500, 120);
+    generate_platform(snake, 3750, 160);
     return snake.bind("CompleteRotation", function() {
       return Crafty.scene("Scene 2");
     });

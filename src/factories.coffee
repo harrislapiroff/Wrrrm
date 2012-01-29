@@ -23,7 +23,7 @@
 	ent.onHit () ->
 		console.log "hit something"
 	
-@generate_platform = (snake, loc, attrs, altitude=20) ->
+@generate_platform = (snake, loc, altitude=20) ->
 	cloud = Crafty.e "2D, DOM, cloud, PlanetWalker"
 	cloud.planetwalker snake, loc - 5, altitude - 10
 	ent = Crafty.e "2D, DOM, Collision, Platform, PlanetWalker"

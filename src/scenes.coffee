@@ -73,6 +73,7 @@ Crafty.scene "Setup", () ->
 	protagonist.bind "Moved", MovedHandler
 
 Crafty.scene "Scene 1", () ->
+	# a basic level that gradually speeds up and has a couple platforms, basically a tutorial
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
 	color_shift(0, 0, 80)
@@ -90,7 +91,9 @@ Crafty.scene "Scene 1", () ->
 		generate_spike snake, i
 	
 	generate_platform snake, 3000, 40
-	generate_platform snake, 3500, 80
+	generate_platform snake, 3250, 80
+	generate_platform snake, 3500, 120
+	generate_platform snake, 3750, 160
 
 	snake.bind "CompleteRotation", () ->
 		Crafty.scene "Scene 2"

@@ -34,7 +34,7 @@
       return console.log("hit something");
     });
   };
-  this.generate_platform = function(snake, loc, attrs, altitude) {
+  this.generate_platform = function(snake, loc, altitude) {
     var cloud, ent;
     if (altitude == null) {
       altitude = 20;
