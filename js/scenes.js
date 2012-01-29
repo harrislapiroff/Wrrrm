@@ -33,6 +33,9 @@
     });
     return Crafty.load(["img/person.png", "img/noise.png", "img/spike.png"], function() {
       Crafty.audio.play("music");
+      Crafty.audio.settings("music", {
+        loop: true
+      });
       return Crafty.scene("Setup");
     });
   });

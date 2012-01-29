@@ -4,7 +4,11 @@
     if (a == null) {
       a = .3;
     }
-    overlayer = document.getElementById("overlayer");
-    return overlayer.style.backgroundColor = "hsla(" + h + ", " + s + "%, " + l + "%, " + a + ")";
+    if (FANCY) {
+      overlayer = document.getElementById("overlayer");
+      return overlayer.style.backgroundColor = "hsla(" + h + ", " + s + "%, " + l + "%, " + a + ")";
+    } else {
+      return document.body.style.backgroundColor = "hsl(" + h + "," + s + "%," + l + "%)";
+    }
   };
 }).call(this);

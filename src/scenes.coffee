@@ -14,6 +14,7 @@ Crafty.scene "loading", () ->
 	
 	Crafty.load ["img/person.png", "img/noise.png","img/spike.png"], () ->
 		Crafty.audio.play "music"
+		Crafty.audio.settings "music", {loop: true}
 		Crafty.scene("Setup")
 
 
