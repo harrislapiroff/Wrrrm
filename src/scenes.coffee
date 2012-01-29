@@ -33,7 +33,7 @@ Crafty.scene "Setup", () ->
 	snake = generate_snake WORLD_RADIUS
 	protagonist = generate_protagonist snake
 	snakehead = generate_snakehead snake, SNAKEHEAD_ORIGIN
-	death_floor = generate_death x: -1000, y: Crafty.viewport.height + 30, w: Crafty.viewport.width + 2000, h: 1
+	death_floor = generate_death x: -1000, y: Crafty.viewport.height + 200, w: Crafty.viewport.width + 2000, h: 1
 	platform = generate_platform snake, 800, 80
 	platform_2 = generate_platform snake, 900, 120
 	snake.addComponent "Persist"
