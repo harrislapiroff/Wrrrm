@@ -153,14 +153,8 @@
       i = _ref[_i];
       generate_spike(snake, i);
     }
-    generate_platform(snake, 2000, {
-      w: 100,
-      h: 5
-    }, 50);
-    generate_platform(snake, 2300, {
-      w: 100,
-      h: 5
-    }, 80);
+    generate_platform(snake, 2000, 50);
+    generate_platform(snake, 2300, 80);
     return snake.bind("CompleteRotation", function() {
       return Crafty.scene("Scene 4");
     });

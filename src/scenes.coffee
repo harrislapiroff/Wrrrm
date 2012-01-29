@@ -111,6 +111,7 @@ Crafty.scene "Scene 2", () ->
 		Crafty.scene "Scene 3"
 
 Crafty.scene "Scene 3", () ->
+	# a level with some spikes in the middle that are too close together to jump over, so you must use the clouds
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
 	color_shift(190, 20, 30)
@@ -119,8 +120,8 @@ Crafty.scene "Scene 3", () ->
 	for i in [900, 950, 1000, 1050, 1100, 1800, 1850, 1900, 1950, 2000, 2050, 2100, 2150, 4700, 5100, 5500]
 		generate_spike snake, i
 	
-	generate_platform snake, 2000, {w: 100, h: 5}, 50
-	generate_platform snake, 2300, {w: 100, h: 5}, 80
+	generate_platform snake, 2000, 50
+	generate_platform snake, 2300, 80
 
 	snake.bind "CompleteRotation", () ->
 		Crafty.scene "Scene 4"
