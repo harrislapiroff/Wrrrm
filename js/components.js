@@ -110,12 +110,19 @@
         }
       }, this));
       return this.bind("EnterFrame", function() {
+        var x, y;
         this._theta = this._theta % 360;
         this.attr({
           rotation: this._theta,
           y: this.planet.pos()._y - this._altitude - this.pos()._h
         });
-        return this.origin(this.pos()._w / 2, this.planet.radius + this._altitude + this.pos()._h);
+        this.origin(this.pos()._w / 2, this.planet.radius + this._altitude + this.pos()._h);
+        if (this.map) {
+          x = (this.planet.radius + altitude) * Math.cos((90 - this._theta) * Math.PI / 180) + Crafty.viewport.width / 2 - this.pos()._w / 2;
+          y = Crafty.viewport.height / 2 - (this.planet.radius + altitude) * Math.sin((90 - this._theta) * Math.PI / 180) + this.planet.radius - this.pos()._h / 2;
+          this.map.shift(-this.map.points[0].x, -this.map.points[0].y);
+          return this.map.shift(x, y);
+        }
       });
     },
     attachToPlanet: function() {
@@ -227,11 +234,6 @@
     },
     isFalling: function() {
       return this._falling;
-    }
-  });
-  Crafty.c("Platform", {
-    init: function() {
-      return this.collision();
     }
   });
 }).call(this);

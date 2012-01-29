@@ -7,12 +7,14 @@
   this.generate_spike = function(snake, loc) {
     var ent;
     ent = Crafty.e("2D, DOM, Collision, Tween, PlanetWalker, spike, Deadly");
-    return ent.planetwalker(snake, loc, -2);
+    ent.planetwalker(snake, loc, -2);
+    return ent.collision();
   };
   this.generate_snakehead = function(snake, loc) {
     var ent;
     ent = Crafty.e("2D, DOM, Collision, Tween, PlanetWalker, snakehead, Deadly");
-    return ent.planetwalker(snake, loc, -5);
+    ent.planetwalker(snake, loc, -5);
+    return ent.collision();
   };
   this.generate_protagonist = function(snake) {
     var ent;
@@ -26,7 +28,10 @@
     ent.planetwalker(snake);
     ent.twowayOnPlanet(snake, 10, 10);
     ent.planetGravity("Platform");
-    return ent.collision();
+    ent.collision();
+    return ent.onHit(function() {
+      return console.log("hit something");
+    });
   };
   this.generate_platform = function(snake, loc, attrs, altitude) {
     var ent;
