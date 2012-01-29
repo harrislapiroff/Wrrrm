@@ -53,7 +53,7 @@ Crafty.scene "Setup", () ->
 		# make man mortal
 		protagonist.mortality()
 		# go to scene 1
-		Crafty.scene "Scene 2"
+		Crafty.scene "Scene 1"
 
 	protagonist.bind "Moved", MovedHandler
 
@@ -68,12 +68,12 @@ Crafty.scene "Scene 1", () ->
 		generate_spike snake, i
 	
 	snake.bind "CompleteRotation", () ->
-		Crafty.scene "Scene 1"
+		Crafty.scene "Scene 2"
 
 Crafty.scene "Scene 2", () ->
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
-	color_shift(140, 70, 50)
+	color_shift(190, 20, 30)
 	snake.startSpin -.25
 	
 	for i in [900, 950, 1000, 1050, 1100, 1800, 1850, 1900, 1950, 2000, 2050, 2100, 2150, 4700, 5100, 5500]
@@ -89,7 +89,7 @@ Crafty.scene "Scene 2", () ->
 Crafty.scene "Scene 3", () ->
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
-	color_shift(140, 70, 50)
+	color_shift(0, 90, 30)
 	snake.startSpin -.5
 	
 	for i in [900, 1300, 1700, 2100, 2150, 2200, 2600, 3000, 3400, 3800, 3850, 3900, 4300, 4700, 5100, 5500]
@@ -97,3 +97,15 @@ Crafty.scene "Scene 3", () ->
 	
 	snake.bind "CompleteRotation", () ->
 		Crafty.scene "Scene 4"
+
+Crafty.scene "Scene 4", () ->
+		snake = Crafty(Crafty("Snake")[0])
+		protagonist = Crafty(Crafty("Protagonist")[0])
+		color_shift(25, 90, 60)
+		snake.startSpin -.6
+
+		for i in [825, 850, 900, 1500, 1600, 2200, 2250, 2300, 2600, 3800, 3850, 3900, 4300, 4700, 5100, 5500]
+			generate_spike snake, i
+
+		snake.bind "CompleteRotation", () ->
+			Crafty.scene "Scene 5"
