@@ -34,15 +34,15 @@
 	
 	ent.bind "NewDirection", (direction) ->
 		if direction == "left"
-			@animate "walkingl", 1, -1
+			@animate "walkingl", 20, -1
 		if direction == "right"
-			@animate "walkingr", 1, -1
+			@animate "walkingr", 20, -1
 		if direction == "upleft"
-			@animate "jumpl", 1, -1
+			@animate "jumpl", 20, -1
 		if direction == "upright"
-			@animate "jumpr", 1, -1
+			@animate "jumpr", 20, -1
 		if direction == "none"
-			@animate "standingl", 1, -1
+			@animate "standingl", 20, -1
 	
 	ent.onHit () ->
 		console.log "hit something"

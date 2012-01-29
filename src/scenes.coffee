@@ -248,7 +248,7 @@ Crafty.scene "Scene 100", () ->
 	
 	credit_text = Crafty.e "2D, DOM, Text, Tween, Persist, Title"
 	credit_text.attr w: Crafty.viewport.width, h: 256, x: 0, y: 160, alpha:0
-	credit_text.text "Design & Code: Harris Lapiroff<br />Music: Jarryd Huntley"
+	credit_text.text "Design & Code: Harris Lapiroff<br />Music: Jarryd Huntley<br />Character: Amanda Lozada"
 	credit_text.css "text-align": "center", "color": "#000", "font-family": "Medula One", "font-size": 64, "text-transform": "uppercase"
 	credit_text.delay (() -> @tween {alpha: 1}, 50), 5000
 

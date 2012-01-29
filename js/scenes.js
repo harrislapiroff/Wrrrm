@@ -311,7 +311,7 @@
       y: 160,
       alpha: 0
     });
-    credit_text.text("Design & Code: Harris Lapiroff<br />Music: Jarryd Huntley");
+    credit_text.text("Design & Code: Harris Lapiroff<br />Music: Jarryd Huntley<br />Character: Amanda Lozada");
     credit_text.css({
       "text-align": "center",
       "color": "#000",

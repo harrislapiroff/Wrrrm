@@ -44,19 +44,19 @@
     ent.animate("jumpr", 7, 0, 7);
     ent.bind("NewDirection", function(direction) {
       if (direction === "left") {
-        this.animate("walkingl", 1, -1);
+        this.animate("walkingl", 20, -1);
       }
       if (direction === "right") {
-        this.animate("walkingr", 1, -1);
+        this.animate("walkingr", 20, -1);
       }
       if (direction === "upleft") {
-        this.animate("jumpl", 1, -1);
+        this.animate("jumpl", 20, -1);
       }
       if (direction === "upright") {
-        this.animate("jumpr", 1, -1);
+        this.animate("jumpr", 20, -1);
       }
       if (direction === "none") {
-        return this.animate("standingl", 1, -1);
+        return this.animate("standingl", 20, -1);
       }
     });
     return ent.onHit(function() {
