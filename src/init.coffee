@@ -17,6 +17,17 @@ VIEW_HEIGHT = Crafty.DOM.window.height
 main = () ->
 	if FANCY
 		document.body.setAttribute("class", "fancy")
+
+	# Crafty's audio looping doesn't seem to work, so hijack the element to loop it outselves.
+	audio_end = () ->
+		aud = @cloneNode(true)
+		aud.play()
+		aud.addEventListener "ended", audio_end
+
+	Crafty.audio.play "music"
+	audio_element = Crafty.audio._elems["music"][0]
+	audio_element.addEventListener "ended", audio_end
+
 	Crafty.init VIEW_WIDTH, VIEW_HEIGHT
 	Crafty.canvas.init()
 	Crafty.scene "loading"

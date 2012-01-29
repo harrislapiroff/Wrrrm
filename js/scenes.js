@@ -32,16 +32,6 @@
       "color": "#000"
     });
     return Crafty.load(["img/person.png", "img/noise.png", "img/spike.png"], function() {
-      var audio_element, audio_end;
-      audio_end = function() {
-        var aud;
-        aud = this.cloneNode(true);
-        aud.play();
-        return aud.addEventListener("ended", audio_end);
-      };
-      Crafty.audio.play("music");
-      audio_element = Crafty.audio._elems["music"][0];
-      audio_element.addEventListener("ended", audio_end);
       return Crafty.scene("Setup");
     });
   });
@@ -208,7 +198,65 @@
       generate_spike(snake, i);
     }
     return snake.bind("CompleteRotation", function() {
-      return Crafty.scene("Scene 7");
+      return Crafty.scene("Scene 100");
     });
+  });
+  Crafty.scene("Scene 100", function() {
+    var credit_text, object, objects, protagonist, snake, title_text, _i, _len;
+    snake = Crafty(Crafty("Snake")[0]);
+    protagonist = Crafty(Crafty("Protagonist")[0]);
+    protagonist.immortality();
+    protagonist.destroy();
+    snake.startSpin(-.6);
+    color_shift(255, 255, 255);
+    title_text = Crafty(Crafty("Title")[0]);
+    snake.delay((function() {
+      return this.startSpin(-.4);
+    }), 2000);
+    snake.delay((function() {
+      return this.startSpin(-.2);
+    }), 2500);
+    snake.delay((function() {
+      return this.startSpin(-.1);
+    }), 3000);
+    snake.delay((function() {
+      return this.stopSpin();
+    }), 4500);
+    objects = Crafty("2D Tween");
+    for (_i = 0, _len = objects.length; _i < _len; _i++) {
+      object = objects[_i];
+      Crafty(object).delay((function() {
+        return this.tween({
+          alpha: 0
+        }, 100);
+      }), 3000);
+    }
+    title_text.text("FIN");
+    title_text.delay((function() {
+      return this.tween({
+        alpha: 1
+      }, 50);
+    }), 4000);
+    credit_text = Crafty.e("2D, DOM, Text, Tween, Persist, Title");
+    credit_text.attr({
+      w: Crafty.viewport.width,
+      h: 256,
+      x: 0,
+      y: 160,
+      alpha: 0
+    });
+    credit_text.text("Design & Code: Harris Lapiroff<br />Music: Jarryd Huntley");
+    credit_text.css({
+      "text-align": "center",
+      "color": "#000",
+      "font-family": "Medula One",
+      "font-size": 64,
+      "text-transform": "uppercase"
+    });
+    return credit_text.delay((function() {
+      return this.tween({
+        alpha: 1
+      }, 50);
+    }), 5000);
   });
 }).call(this);

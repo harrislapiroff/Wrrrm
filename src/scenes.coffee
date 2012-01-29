@@ -13,17 +13,6 @@ Crafty.scene "loading", () ->
 	loading_text.css "text-align": "center", "color": "#000"
 	
 	Crafty.load ["img/person.png", "img/noise.png","img/spike.png"], () ->
-		
-		# Crafty's audio looping doesn't seem to work, so hijack the element to loop it outselves.
-		audio_end = () ->
-			aud = @cloneNode(true)
-			aud.play()
-			aud.addEventListener "ended", audio_end
-		
-		Crafty.audio.play "music"
-		audio_element = Crafty.audio._elems["music"][0]
-		audio_element.addEventListener "ended", audio_end
-		
 		# start the game!
 		Crafty.scene("Setup")
 
@@ -170,4 +159,44 @@ Crafty.scene "Scene 6", () ->
 		generate_spike snake, i
 
 	snake.bind "CompleteRotation", () ->
-		Crafty.scene "Scene 7"
+		Crafty.scene "Scene 100"
+
+Crafty.scene "Scene 100", () ->
+	snake = Crafty(Crafty("Snake")[0])
+	protagonist = Crafty(Crafty("Protagonist")[0])
+	protagonist.immortality()
+	protagonist.destroy()
+	snake.startSpin -.6
+	color_shift(255, 255, 255)
+	title_text = Crafty(Crafty("Title")[0])
+	
+	# slow down to a stop
+	snake.delay (() -> @startSpin -.4), 2000
+	snake.delay (() -> @startSpin -.2), 2500
+	snake.delay (() -> @startSpin -.1), 3000
+	snake.delay (() -> @stopSpin()), 4500
+	
+	# fade everything out
+	objects = Crafty("2D Tween")
+	for object in objects
+		Crafty(object).delay (() -> @tween {alpha: 0}, 100), 3000
+	
+	#bring back the title text
+	title_text.text "FIN"
+	title_text.delay (() -> @tween {alpha: 1}, 50), 4000
+	
+	credit_text = Crafty.e "2D, DOM, Text, Tween, Persist, Title"
+	credit_text.attr w: Crafty.viewport.width, h: 256, x: 0, y: 160, alpha:0
+	credit_text.text "Design & Code: Harris Lapiroff<br />Music: Jarryd Huntley"
+	credit_text.css "text-align": "center", "color": "#000", "font-family": "Medula One", "font-size": 64, "text-transform": "uppercase"
+	credit_text.delay (() -> @tween {alpha: 1}, 50), 5000
+
+	# not sure why this restart code isn't working. get it later
+	#destroy_all = () ->
+	#	objects = Crafty('2D')
+	#	for object in objects
+	#		Crafty(object).removeComponent("Persist")
+	#		Crafty(object).destroy()
+	#		Crafty.scene "loading"
+	#		
+	#setTimeout destroy_all, 8000
