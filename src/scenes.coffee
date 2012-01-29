@@ -16,7 +16,7 @@ Crafty.scene "loading", () ->
 		
 		# Crafty's audio looping doesn't seem to work, so hijack the element to loop it outselves.
 		audio_end = () ->
-			aud = @cloneNode()
+			aud = @cloneNode(true)
 			aud.play()
 			aud.addEventListener "ended", audio_end
 		
@@ -143,7 +143,7 @@ Crafty.scene "Scene 5", () ->
 	# A straight up fast level with no enemies. Just don't fall off the back.
 	snake = Crafty(Crafty("Snake")[0])
 	protagonist = Crafty(Crafty("Protagonist")[0])
-	color_shift(0, 80, 20)
+	color_shift(340, 80, 20)
 	snake.startSpin -.62
 
 	snake.bind "CompleteRotation", () ->

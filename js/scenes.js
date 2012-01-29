@@ -35,7 +35,7 @@
       var audio_element, audio_end;
       audio_end = function() {
         var aud;
-        aud = this.cloneNode();
+        aud = this.cloneNode(true);
         aud.play();
         return aud.addEventListener("ended", audio_end);
       };
@@ -178,7 +178,7 @@
     var protagonist, snake;
     snake = Crafty(Crafty("Snake")[0]);
     protagonist = Crafty(Crafty("Protagonist")[0]);
-    color_shift(0, 80, 20);
+    color_shift(340, 80, 20);
     snake.startSpin(-.62);
     return snake.bind("CompleteRotation", function() {
       return Crafty.scene("Scene 6");
