@@ -35,16 +35,17 @@
     });
   };
   this.generate_platform = function(snake, loc, attrs, altitude) {
-    var ent;
+    var cloud, ent;
     if (altitude == null) {
       altitude = 20;
     }
+    cloud = Crafty.e("2D, DOM, cloud, PlanetWalker");
+    cloud.planetwalker(snake, loc - 5, altitude - 10);
     ent = Crafty.e("2D, DOM, Collision, Platform, PlanetWalker");
-    ent.css({
-      'background-color': '#000',
-      'border-radius': 3
+    ent.attr({
+      w: 100,
+      h: 3
     });
-    ent.attr(attrs);
     ent.planetwalker(snake, loc, altitude);
     return ent.collision();
   };

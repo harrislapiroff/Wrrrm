@@ -24,11 +24,13 @@
 		console.log "hit something"
 	
 @generate_platform = (snake, loc, attrs, altitude=20) ->
+	cloud = Crafty.e "2D, DOM, cloud, PlanetWalker"
+	cloud.planetwalker snake, loc - 5, altitude - 10
 	ent = Crafty.e "2D, DOM, Collision, Platform, PlanetWalker"
-	ent.css 'background-color':'#000', 'border-radius': 3
-	ent.attr attrs
+	ent.attr {w: 100, h: 3}
 	ent.planetwalker snake, loc, altitude
 	ent.collision()
+
 	
 @generate_death = (attrs) ->
 	ent = Crafty.e "2D, DOM, Collision, Deadly"

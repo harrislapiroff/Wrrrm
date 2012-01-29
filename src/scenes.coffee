@@ -24,8 +24,8 @@ Crafty.scene "Setup", () ->
 	protagonist = generate_protagonist snake
 	snakehead = generate_snakehead snake, SNAKEHEAD_ORIGIN
 	death_floor = generate_death x: -1000, y: Crafty.viewport.height + 30, w: Crafty.viewport.width + 2000, h: 1
-	platform = generate_platform snake, 800, {w: 100, h: 3}, 80
-	platform_2 = generate_platform snake, 900, {w: 100, h: 3}, 120
+	platform = generate_platform snake, 800, 80
+	platform_2 = generate_platform snake, 900, 120
 	snake.addComponent "Persist"
 	protagonist.addComponent "Persist"
 	snakehead.addComponent "Persist"
@@ -59,7 +59,7 @@ Crafty.scene "Setup", () ->
 			Crafty.scene "Scene #{level}"
 		else
 			Crafty.scene "Scene 1"
-
+	
 	protagonist.bind "Moved", MovedHandler
 
 

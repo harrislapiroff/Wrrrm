@@ -51,14 +51,8 @@
       w: Crafty.viewport.width + 2000,
       h: 1
     });
-    platform = generate_platform(snake, 800, {
-      w: 100,
-      h: 3
-    }, 80);
-    platform_2 = generate_platform(snake, 900, {
-      w: 100,
-      h: 3
-    }, 120);
+    platform = generate_platform(snake, 800, 80);
+    platform_2 = generate_platform(snake, 900, 120);
     snake.addComponent("Persist");
     protagonist.addComponent("Persist");
     snakehead.addComponent("Persist");

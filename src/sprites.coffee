@@ -6,3 +6,6 @@ Crafty.sprite 32, 34, "img/spike.png",
 
 Crafty.sprite 128, 40, "img/snakehead.png",
 	"snakehead": [0, 0]
+
+Crafty.sprite 110, 60, "img/cloud.png",
+	"cloud": [0, 0]
