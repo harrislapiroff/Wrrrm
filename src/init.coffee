@@ -1,5 +1,6 @@
 # Concept and Code Harris Lapiroff
 # Music Jarryd Huntley
+# Character by Amanda Lozada
 
 @GAME_TITLE = "WRRRM"
 if get_query_variable('fancy') == "true"
